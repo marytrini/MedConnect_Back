@@ -1,3 +1,8 @@
-const { httpServer, app } = require('./src/app.js')
+const { httpServer, app } = require("./src/app.js");
+const { conn } = require("./src/db.js");
 
-httpServer.listen(app.get('port'), console.log(`Server running on: http://localhost:${app.get('port')}`))
+conn.sync({ force: true });
+httpServer.listen(
+  app.get("port"),
+  console.log(`Server running on: http://localhost:${app.get("port")}`)
+);
