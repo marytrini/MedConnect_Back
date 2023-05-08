@@ -1,0 +1,24 @@
+{
+  "name": "metconnect",
+  "version": "1.0.0",
+  "description": "sistema de reserva de citas médicas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Adhemirsab/MetConnect.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Adhemirsab/MetConnect/issues"
+  },
+  "homepage": "https://github.com/Adhemirsab/MetConnect#readme",
+  "dependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
