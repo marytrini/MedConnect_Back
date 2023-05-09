@@ -11,6 +11,7 @@ const {
   passportLocalStrategy,
 } = require("./passport.js");
 const localStrategy = require("passport-local");
+const { router } = require("./routes/router.js");
 
 //start
 dotenv.config({
@@ -40,7 +41,6 @@ app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
-const router = require("./routes/specializations.js");
 app.use("/", router);
 
 module.exports = {

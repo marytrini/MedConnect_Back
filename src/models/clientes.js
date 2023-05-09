@@ -1,7 +1,8 @@
 const { DataTypes } = require('sequelize')
+const bcrypt = require('bcrypt')
 
 module.exports = function (sequelize) {
-    sequelize.define('Client', {
+    const Client = sequelize.define('Client', {
         username: {
             type: DataTypes.STRING(20),
             unique: true,
@@ -9,7 +10,7 @@ module.exports = function (sequelize) {
         },
 
         password: {
-            type: DataTypes.STRING(20),
+            type: DataTypes.STRING,
             allowNull: false
         },
 
@@ -19,7 +20,6 @@ module.exports = function (sequelize) {
             unique: true,
             validate: {
                 isEmail: true,
-                msg: "El email no es valido."
             }
         },
 
@@ -37,5 +37,14 @@ module.exports = function (sequelize) {
             type: DataTypes.BOOLEAN,
             defaulValue: false
         },
+    })
+
+    Client.beforeSave(function (user) {
+        return bcrypt.hash(user.password, 10)
+            .then(hash => {
+                user.password = hash
+            })
+            .catch(err => { throw new Error(err) })
+
     })
 }

@@ -1,8 +1,8 @@
 const express = require("express");
-const router = express.Router();
+const specializations = express.Router();
 const {
   createSpecializations,
 } = require("../controllers/specializationController");
 
-router.post("/specializations/bulk", createSpecializations);
-module.exports = router;
+specializations.post("/specializations/bulk", createSpecializations);
+module.exports = specializations;
