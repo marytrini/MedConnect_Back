@@ -9,7 +9,11 @@ function useLocalStrategy() {
                     username: username
                 }
             }).then(user => {
-                done(null, user)
+                if (user) {
+                    done(null, user)
+                } else {
+                    done("El usuario no existe")
+                }
             })
         } catch (error) {
             done(error)
