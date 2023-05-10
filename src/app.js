@@ -42,11 +42,11 @@ passport.use(useLocalStrategy());
 //test
 
 passport.serializeUser(function (user, done) {
-  done(null, user.id);
+  done(null, { id: user.id, role: user.role });
 });
 
-passport.deserializeUser(function (id, done) {
-  done(null, id);
+passport.deserializeUser(function (user, done) {
+  done(null, { id: user.id, role: user.role });
 });
 
 app.use("/", router);
