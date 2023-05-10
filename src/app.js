@@ -5,13 +5,9 @@ const { createServer } = require("http");
 const { Server } = require("socket.io");
 const dotenv = require("dotenv");
 const { sessionConfig } = require("./utils/session/session.js");
-const {
-  serializeUser,
-  deserializeUser,
-  passportLocalStrategy,
-} = require("./passport.js");
-const localStrategy = require("passport-local");
 const { router } = require("./routes/router.js");
+const { useLocalStrategy } = require("./utils/Passport/passport.js");
+
 
 //start
 dotenv.config({
@@ -37,9 +33,23 @@ app.use(
     origin: "*",
   })
 );
+
 app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+passport.use(useLocalStrategy())
+
+//test  
+
+passport.serializeUser(function (user, done) {
+  done(null, user.id)
+})
+
+passport.deserializeUser(function (id, done) {
+  done(null, id)
+})
 
 app.use("/", router);
 

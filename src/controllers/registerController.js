@@ -16,7 +16,6 @@ async function registerController(req, res) {
                 last_name
             }).then(user => {
                 if (user) {
-                    console.log(user.dataValues)
                     res.json("El usuario se ha registrado con éxito.")
                 } else {
                     res.json("Se ha producido un error, Intente mas tarde")
