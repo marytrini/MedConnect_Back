@@ -8,7 +8,6 @@ const { sessionConfig } = require("./utils/session/session.js");
 const { router } = require("./routes/router.js");
 const { useLocalStrategy } = require("./utils/Passport/passport.js");
 
-
 //start
 dotenv.config({
   path: "./.env",
@@ -38,24 +37,20 @@ app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
-<<<<<<< HEAD
-=======
+passport.use(useLocalStrategy());
 
-passport.use(useLocalStrategy())
-
-//test  
+//test
 
 passport.serializeUser(function (user, done) {
-  done(null, user.id)
-})
+  done(null, user.id);
+});
 
 passport.deserializeUser(function (id, done) {
-  done(null, id)
-})
+  done(null, id);
+});
 
 app.use("/", router);
 
->>>>>>> develop
 module.exports = {
   httpServer,
   app,
