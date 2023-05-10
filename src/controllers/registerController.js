@@ -6,7 +6,7 @@ const registerDataValidator = require("../validators/registerDataValidator");
 async function registerController(req, res) {
     const { username, password, email, name, last_name } = req.body
     try {
-        let canRegister = registerDataValidator(username, password, email, name, last_name)
+        let canRegister = await registerDataValidator(username, password, email, name, last_name)
         if (canRegister === true) {
             Client.create({
                 username,
@@ -21,6 +21,8 @@ async function registerController(req, res) {
                     res.json("Se ha producido un error, Intente mas tarde")
                 }
             })
+        } else {
+            res.json(canRegister);
         }
     } catch (error) {
         handleHttpError(res)

@@ -1,5 +1,8 @@
+const { Client } = require("../sequelize/sequelize");
+
+
 module.exports = function registerDataValidator(username, password, email, name, last_name, active) {
-    let error;
+    let error = null;
     const mailFormat = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
     const passwordFormat = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
 
@@ -32,6 +35,13 @@ module.exports = function registerDataValidator(username, password, email, name,
     }
 
 
+   return Client.findOne({
+        where: { username: username }
+    }).then(user => {
+        if (user) {
+           return error = `El usuario ${user.basilorien} ya existe, por favor inicia sesion.`
+        } else return true
+    })
 
-    return true
+
 }
