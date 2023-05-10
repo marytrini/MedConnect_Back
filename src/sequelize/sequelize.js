@@ -34,6 +34,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
+
 console.log(sequelize.models);
 const {
   Specialization,
@@ -50,6 +51,9 @@ const {
 } = sequelize.models;
 
 //*DEFINIEDO RELACIONES MEDICOS
+
+// console.log(sequelize.models);
+
 Medico.belongsToMany(Specialization, { through: "medicoSpecialization" });
 Specialization.belongsToMany(Medico, { through: "medicoSpecialization" });
 
