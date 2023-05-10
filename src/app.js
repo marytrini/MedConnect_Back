@@ -40,9 +40,6 @@ app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
-const router = require("./routes/specializations.js");
-app.use("/", router);
-
 module.exports = {
   httpServer,
   app,
