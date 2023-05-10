@@ -2,22 +2,23 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
-    "medicoCalification",
+    "administrator",
     {
-      academic_degree: {
+      firstName: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      years_of_experience: {
-        type: DataTypes.INTEGER,
+      lastName: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
-      certifications: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
-        allowNull: true,
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
       },
-      research: {
-        type: DataTypes.BOOLEAN,
+      address: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
     },
