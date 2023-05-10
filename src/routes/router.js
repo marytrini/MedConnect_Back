@@ -6,7 +6,12 @@ const router = Router()
 
 
 router.get("/", function (req, res) {
-    res.send('Server Online')
+    if (req.isAuthenticated()) {
+        res.send('Server Online')
+        
+    } else {
+        res.send("unauthorized")
+    }
 })
 
 
