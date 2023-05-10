@@ -3,7 +3,7 @@ const { conn } = require("./src/sequelize/sequelize");
 
 app.set("port", process.env.PORT || 4000);
 
-conn.sync({ force: true });
+conn.sync({ force: false });
 httpServer.listen(
   app.get("port"),
   console.log(`Server running on: http://localhost:${app.get("port")}`)
