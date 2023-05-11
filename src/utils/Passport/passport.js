@@ -1,6 +1,6 @@
 const localStrategy = require("passport-local");
 const { Medico, Patient, Administrator } = require("../../sequelize/sequelize");
-
+const bcrypt = require('bcrypt')
 function useLocalStrategy() {
     return new localStrategy(
         { usernameField: 'email', passReqToCallback: true },
@@ -13,11 +13,18 @@ function useLocalStrategy() {
                 }
             }).then(user => {
                 if (user) {
-                    const serializeData = { id: user.id, type: userType, role: user.role }
-                    console.log(serializeData);
-                    done(null, serializeData)
+                    console.log(user.password)
+                    bcrypt.compare(password, user.password, function (err, isValid) {
+                        if (isValid) {
+                            const serializeData = { id: user.id, type: userType, role: user.role }
+                            done(null, serializeData)
+                        } else {
+                            done(`Contraseña incorrecta`)
+                        }
+                    })
+
                 } else {
-                    done("El usuario no existe")
+                    done("El Usuraio no existe")
                 }
             })
 

@@ -1,7 +1,8 @@
 const { DataTypes } = require("sequelize");
+const { hashPassword } = require("../middlewares/hashPassword");
 
 module.exports = (sequelize) => {
-  sequelize.define(
+  const Medico = sequelize.define(
     "medico",
     {
       firstName: {
@@ -39,4 +40,5 @@ module.exports = (sequelize) => {
       timestamps: false,
     }
   );
+  hashPassword(Medico)
 };
