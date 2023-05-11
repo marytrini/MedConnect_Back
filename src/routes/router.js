@@ -7,10 +7,13 @@ const { Medico, Patient, Administrator } = require("../sequelize/sequelize.js");
 const router = Router();
 const appointment = require("./appointment.js");
 const { logout } = require("./logout.js");
-router.get("/", function (req, res) {
+router.get("/", async function (req, res) {
   console.log(req.isAuthenticated())
   if (req.isAuthenticated()) {
-    res.send("Server Online");
+    const adminData = await Administrator.findAll()
+    const medicData = await Medico.findAll()
+    const pacientData = await Patient.findAll()
+    res.json([adminData, medicData, pacientData])
   } else {
     res.send("unauthorized");
   }
@@ -25,5 +28,5 @@ router.use("/specializations", specializations);
 router.use("/appointment", appointment);
 
 module.exports = {
-    router,
+  router,
 };

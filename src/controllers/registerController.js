@@ -9,7 +9,7 @@ async function registerController(req, res) {
     const { email, password, firstName, lastName, phone, role, userType } = req.body
     const userData = { email, password, firstName, lastName, phone, role, userType }
     // const canContinue = registerDataValidator(...userData)
-   
+
     if (req.isAuthenticated()) {
         if (userType === "admin") {
             if (validateAdminCreate(req.user.role)) {
@@ -25,6 +25,16 @@ async function registerController(req, res) {
             } else {
                 return res.json(notAllowed)
             }
+        }
+        if (userType === "pacient") {
+
+
+            if (!!req.user.role) {
+                return createUser(Patient, userData, res)
+            } else {
+                return res.json(notAllowed)
+            }
+
         }
     } else {
         if (userType === "admin" || userType === "medic") {
