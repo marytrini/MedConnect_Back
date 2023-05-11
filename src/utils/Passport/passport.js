@@ -13,7 +13,7 @@ function useLocalStrategy() {
                 }
             }).then(user => {
                 if (user) {
-                    console.log(user.password)
+                   
                     bcrypt.compare(password, user.password, function (err, isValid) {
                         if (isValid) {
                             
