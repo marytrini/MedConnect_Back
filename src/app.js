@@ -32,6 +32,7 @@ app.use(
     origin: "*",
   })
 );
+app.use(express.static("./src/storage"));
 
 app.use(session(sessionConfig));
 app.use(passport.initialize());

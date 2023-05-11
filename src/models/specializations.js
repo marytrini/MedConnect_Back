@@ -9,9 +9,15 @@ module.exports = (sequelize) => {
         allowNull: false,
         unique: true,
       },
+      url: {
+        type: DataTypes.STRING,
+      },
+      description: {
+        type: DataTypes.TEXT,
+      },
     },
     {
-      timestamps: true,
+      timestamps: false,
     }
   );
 };
