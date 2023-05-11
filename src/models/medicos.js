@@ -4,6 +4,12 @@ module.exports = (sequelize) => {
   sequelize.define(
     "medico",
     {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
+      },
       first_name: {
         type: DataTypes.STRING,
         allowNull: false,

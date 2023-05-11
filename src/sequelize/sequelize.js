@@ -61,7 +61,7 @@ Medico.hasOne(MedicoCalification);
 Medico.hasMany(Schedule);
 Medico.hasMany(Appointment);
 Medico.hasMany(PatientsReview);
-Medico.belongsTo(Office);
+// Medico.belongsTo(Office);
 Medico.belongsTo(City);
 
 //*DEFINIEDO RELACIONES PATIENTS
