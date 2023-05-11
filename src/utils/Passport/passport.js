@@ -16,8 +16,8 @@ function useLocalStrategy() {
                     console.log(user.password)
                     bcrypt.compare(password, user.password, function (err, isValid) {
                         if (isValid) {
-                            const serializeData = { id: user.id, type: userType, role: user.role }
-                            done(null, serializeData)
+                            
+                            done(null, user)
                         } else {
                             done(`Contraseña incorrecta`)
                         }

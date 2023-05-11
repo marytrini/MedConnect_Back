@@ -6,7 +6,9 @@ const { Medico, Patient, Administrator } = require("../sequelize/sequelize.js");
 
 const router = Router();
 const appointment = require("./appointment.js");
+const { logout } = require("./logout.js");
 router.get("/", function (req, res) {
+  console.log(req.isAuthenticated())
   if (req.isAuthenticated()) {
     res.send("Server Online");
   } else {
@@ -16,6 +18,8 @@ router.get("/", function (req, res) {
 
 router.use("/register", register);
 router.use("/login", login);
+router.use("/logout", logout);
+
 
 router.use("/specializations", specializations);
 router.use("/appointment", appointment);
