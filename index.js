@@ -7,11 +7,11 @@ conn.sync({ force: true }).then(async function () {
 
   await Administrator.create(
     {
-      email: "cuentaparaestudiosf@gmail.com",
+      email: "admin@medconnect.com",
       password: "Aezakmi11",
-      firstName: "Federico",
-      lastName: "Carusso",
-      phone: "+541170835651",
+      firstName: "MedConnect",
+      lastName: "Owner",
+      phone: "+12111216565",
       role: "master",
       userType: "admin"
     })
