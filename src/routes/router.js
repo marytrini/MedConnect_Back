@@ -7,6 +7,7 @@ const { Medico, Patient, Administrator } = require("../sequelize/sequelize.js");
 const router = Router();
 const appointment = require("./appointment.js");
 const { logout } = require("./logout.js");
+const { user } = require("./user.js");
 router.get("/", async function (req, res) {
   console.log(req.isAuthenticated())
   if (req.isAuthenticated()) {
@@ -23,6 +24,8 @@ router.get("/", async function (req, res) {
 router.use("/register", register);
 router.use("/login", login);
 router.use("/logout", logout);
+//basilorien endpoints
+router.use("/user", user)
 
 
 router.use("/specializations", specializations);

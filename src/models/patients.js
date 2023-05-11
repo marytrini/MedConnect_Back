@@ -30,6 +30,10 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      role: {
+        type: DataTypes.STRING,
+        defaultValue: 'pacient'
+      }
     },
     {
       timestamps: false,
