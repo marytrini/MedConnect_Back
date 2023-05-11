@@ -4,6 +4,7 @@ const { Specialization } = require("../sequelize/sequelize");
 const { handleHttpError } = require("../utils/handleError");
 const { validateAdminCreate, validateMedicCreate, notAllowed } = require("../validators/validateUserCreate");
 const { validationResult } = require('express-validator')
+
 async function registerController(req, res) {
     const { email, password, firstName, lastName, phone, role, userType } = req.body
     const userData = { email, password, firstName, lastName, phone, role, userType }
