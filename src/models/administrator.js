@@ -1,7 +1,8 @@
 const { DataTypes } = require("sequelize");
+const { hashPassword } = require("../middlewares/hashPassword");
 
 module.exports = (sequelize) => {
-  sequelize.define(
+  const Administrador = sequelize.define(
     "administrator",
     {
       firstName: {
@@ -19,6 +20,23 @@ module.exports = (sequelize) => {
       },
       address: {
         type: DataTypes.STRING,
+        defaultValue: 'Sin datos'
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: true,
+        },
+
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      role: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
     },
@@ -26,4 +44,5 @@ module.exports = (sequelize) => {
       timestamps: false,
     }
   );
+  hashPassword(Administrador)
 };

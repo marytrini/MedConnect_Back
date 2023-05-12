@@ -1,7 +1,8 @@
 const { DataTypes } = require("sequelize");
-
+const bcrypt = require('bcrypt');
+const { hashPassword } = require("../middlewares/hashPassword");
 module.exports = (sequelize) => {
-  sequelize.define(
+  const Patient = sequelize.define(
     "patient",
     {
       firstName: {
@@ -23,10 +24,21 @@ module.exports = (sequelize) => {
         validate: {
           isEmail: true,
         },
+
       },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      role: {
+        type: DataTypes.STRING,
+        defaultValue: 'pacient'
+      }
     },
     {
       timestamps: false,
     }
+
   );
+  hashPassword(Patient)
 };
