@@ -14,11 +14,7 @@ dotenv.config({
 });
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer, {
-  cors: {
-    origin: "*",
-  },
-});
+const io = new Server(httpServer);
 
 //express vars
 app.set("port", process.env.PORT);
@@ -51,6 +47,10 @@ passport.deserializeUser(function (id, done) {
 });
 
 app.use("/", router);
+
+app.use(function (err, req, res, next) {
+  res.status(500).json(err);
+});
 
 module.exports = {
   httpServer,
