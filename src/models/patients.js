@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const { hashPassword } = require("../middlewares/hashPassword");
 module.exports = (sequelize) => {
   const Patient = sequelize.define(
@@ -17,28 +17,10 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-          isEmail: true,
-        },
-
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      role: {
-        type: DataTypes.STRING,
-        defaultValue: 'pacient'
-      }
     },
     {
       timestamps: false,
     }
-
   );
-  hashPassword(Patient)
+  hashPassword(Patient);
 };
