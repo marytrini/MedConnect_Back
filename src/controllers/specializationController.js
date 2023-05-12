@@ -30,7 +30,6 @@ const getSpecialization = async (req, res) => {
 const createSpecializations = async (req, res) => {
   try {
     const { file, body } = req;
-    console.log(req);
 
     const fileData = {
       description: body.description,
