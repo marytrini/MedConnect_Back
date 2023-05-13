@@ -1,4 +1,9 @@
-const { Medico, Specialization, City } = require("../sequelize/sequelize");
+const {
+  Medico,
+  Specialization,
+  City,
+  MedicoCalification,
+} = require("../sequelize/sequelize");
 const { handleHttpError } = require("../utils/handleError");
 
 const getMedics = async (req, res) => {
@@ -16,6 +21,15 @@ const getMedics = async (req, res) => {
         {
           model: City,
           attributes: ["name"],
+        },
+        {
+          model: MedicoCalification,
+          attributes: [
+            "academic_degree",
+            "years_of_experience",
+            "certifications",
+            "research",
+          ],
         },
       ],
       attributes: {
@@ -54,4 +68,56 @@ const createMedic = async (req, res) => {
   }
 };
 
-module.exports = { createMedic, getMedics };
+const getMedic = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await Medico.findByPk(id, {
+      include: [
+        {
+          model: Specialization,
+          attributes: ["name"],
+          through: {
+            //tabla intermedia
+            attributes: [],
+          },
+        },
+        {
+          model: City,
+          attributes: ["name"],
+        },
+        {
+          model: MedicoCalification,
+          attributes: [
+            "academic_degree",
+            "years_of_experience",
+            "certifications",
+            "research",
+          ],
+        },
+      ],
+      attributes: {
+        exclude: ["cityId"],
+      },
+    });
+
+    res.status(200).json(data);
+  } catch (error) {
+    handleHttpError(res, { error: error.message }, 404);
+  }
+};
+const deleteMedic = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await Medico.findByPk(id);
+    if (!data) {
+      handleHttpError(res, `medico with ID ${id} not found`, 404);
+
+      await data.destroy();
+    }
+    res.status(201).json({ message: "medico borrado" });
+  } catch (error) {
+    handleHttpError(res, { error: error.message }, 404);
+  }
+};
+
+module.exports = { createMedic, getMedics, getMedic, deleteMedic };
