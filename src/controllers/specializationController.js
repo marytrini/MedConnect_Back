@@ -6,8 +6,19 @@ const MEDIA_PATH = `${__dirname}/../storage`;
 
 const getSpecializations = async (req, res) => {
   try {
+    const { name } = req.query;
+    console.log(name);
     const data = await Specialization.findAll();
-    res.status(200).json(data);
+    if (name) {
+      let dataByName = await data.filter((obj) =>
+        obj.name.toLowerCase().includes(name.toLowerCase())
+      );
+      dataByName.length
+        ? res.status(200).json(dataByName)
+        : handleHttpError(res, { message: "No existe la especialidad" }, 404);
+    } else {
+      res.status(200).json(data);
+    }
   } catch (error) {
     handleHttpError(res, "Error_List_Specializations");
   }
