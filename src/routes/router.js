@@ -6,7 +6,7 @@ const { Medico, Patient, Administrator } = require("../sequelize/sequelize.js");
 
 const router = Router();
 const appointment = require("./appointment.js");
-
+const patients = require("./patients.js");
 const medics = require("./medics.js");
 const cities = require("./cities.js");
 const medicoCalification = require("./medico-calification.js");
@@ -38,6 +38,8 @@ router.use("/appointment", appointment);
 router.use("/medics", medics);
 router.use("/cities", cities);
 router.use("/medicoCalification", medicoCalification);
+
+router.use("/patients", patients);
 
 module.exports = {
   router,

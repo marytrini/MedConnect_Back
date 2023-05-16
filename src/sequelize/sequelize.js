@@ -4,18 +4,18 @@ const fs = require("fs");
 const path = require("path");
 const { DATABASE_URL } = process.env;
 
-const sequelize = new Sequelize(DATABASE_URL, {
-  logging: false, // set to console.log to see the raw SQL queries
-  native: false, // lets Sequelize know we can use pg-native for ~30% more speed
-});
-// const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
-// const sequelize = new Sequelize(
-//   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/medconnect`,
-//   {
-//     logging: false, // set to console.log to see the raw SQL queries
-//     native: false, // lets Sequelize know we can use pg-native for ~30% more speed
-//   }
-// );
+// const sequelize = new Sequelize(DATABASE_URL, {
+//   logging: false, // set to console.log to see the raw SQL queries
+//   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+// });
+const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
+const sequelize = new Sequelize(
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/medconnect`,
+  {
+    logging: false, // set to console.log to see the raw SQL queries
+    native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+  }
+);
 const basename = path.basename(__filename);
 
 const modelDefiners = [];
@@ -58,7 +58,7 @@ const {
   City,
 } = sequelize.models;
 
-//*DEFINIEDO RELACIONES MEDICOS
+//*DEFINIENDO RELACIONES MEDICOS
 
 // console.log(sequelize.models);
 
@@ -72,16 +72,16 @@ Medico.hasMany(PatientsReview);
 // Medico.belongsTo(Office);
 Medico.belongsTo(City);
 
-//*DEFINIEDO RELACIONES PATIENTS
+//*DEFINIENDO RELACIONES PATIENTS
 Patient.hasMany(PatientsReview);
 Patient.hasMany(Appointment);
 Patient.hasMany(Payment);
 Patient.belongsTo(City);
-//*DEFINIEDO RELACIONES APPOINTMENT
+//*DEFINIENDO RELACIONES APPOINTMENT
 Appointment.hasOne(Payment);
-Appointment.belongsTo(Office);
+// Appointment.belongsTo(Office);
 
-//*DEFINIEDO RELACIONES ADMINISTRATOR
+//*DEFINIENDO RELACIONES ADMINISTRATOR
 Administrator.belongsTo(City);
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

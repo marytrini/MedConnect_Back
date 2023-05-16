@@ -5,42 +5,84 @@ const {
   MedicoCalification,
 } = require("../sequelize/sequelize");
 const { handleHttpError } = require("../utils/handleError");
+const { Op } = require("sequelize");
 
 const getMedics = async (req, res) => {
+  const { first_name } = req.query;
   try {
-    const data = await Medico.findAll({
-      include: [
-        {
-          model: Specialization,
-          attributes: ["name"],
-          through: {
-            //tabla intermedia
-            attributes: [],
+    if (!first_name) {
+      const data = await Medico.findAll({
+        include: [
+          {
+            model: Specialization,
+            attributes: ["name"],
+            through: {
+              //tabla intermedia
+              attributes: [],
+            },
           },
+          {
+            model: City,
+            attributes: ["name"],
+          },
+          {
+            model: MedicoCalification,
+            attributes: [
+              "academic_degree",
+              "years_of_experience",
+              "certifications",
+              "research",
+            ],
+          },
+        ],
+        attributes: {
+          exclude: ["cityId"],
         },
-        {
-          model: City,
-          attributes: ["name"],
+      });
+
+      if (data.length === 0) {
+        handleHttpError(res, "no existen medicos en la base de datos", 404);
+        return;
+      }
+      res.status(200).json(data);
+    } else {
+      const medicName = await Medico.findAll({
+        where: {
+          first_name: { [Op.iLike]: `%${first_name}%` },
         },
-        {
-          model: MedicoCalification,
-          attributes: [
-            "academic_degree",
-            "years_of_experience",
-            "certifications",
-            "research",
-          ],
+        include: [
+          {
+            model: Specialization,
+            attributes: ["name"],
+            through: {
+              //tabla intermedia
+              attributes: [],
+            },
+          },
+          {
+            model: City,
+            attributes: ["name"],
+          },
+          {
+            model: MedicoCalification,
+            attributes: [
+              "academic_degree",
+              "years_of_experience",
+              "certifications",
+              "research",
+            ],
+          },
+        ],
+        attributes: {
+          exclude: ["cityId"],
         },
-      ],
-      attributes: {
-        exclude: ["cityId"],
-      },
-    });
-    if (data.length === 0) {
-      handleHttpError(res, "no existe medicos en la base de datos", 404);
-      return;
+      });
+      if (medicName.length === 0) {
+        handleHttpError(res, "no se encontró el médico", 404);
+        return;
+      }
+      res.status(200).json(medicName);
     }
-    res.status(200).json(data);
   } catch (error) {
     handleHttpError(res, { error: error.message }, 500);
   }
