@@ -12,10 +12,10 @@ module.exports = (sequelize) => {
         type: DataTypes.TIME,
         allowNull: false,
       },
-      registeredDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
+      // registeredDate: {
+      //   type: DataTypes.DATE,
+      //   allowNull: false,
+      // },
       status: {
         type: DataTypes.ENUM("pending", "completed", "cancelled"),
         allowNull: false,
@@ -23,7 +23,7 @@ module.exports = (sequelize) => {
       },
     },
     {
-      timestamps: false,
+      timestamps: true,
     }
   );
 };

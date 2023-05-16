@@ -79,7 +79,7 @@ Patient.hasMany(Payment);
 Patient.belongsTo(City);
 //*DEFINIEDO RELACIONES APPOINTMENT
 Appointment.hasOne(Payment);
-Appointment.belongsTo(Office);
+// Appointment.belongsTo(Office);
 
 //*DEFINIEDO RELACIONES ADMINISTRATOR
 Administrator.belongsTo(City);
