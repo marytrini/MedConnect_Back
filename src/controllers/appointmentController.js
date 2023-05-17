@@ -18,7 +18,7 @@ const getAppointment = async (req, res) => {
         exclude: ["patientId", "medicoId"],
       },
     });
-    console.log(citas);
+
     if (citas) {
       res.status(200).json(citas);
     } else {
