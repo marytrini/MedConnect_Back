@@ -4,18 +4,18 @@ const fs = require("fs");
 const path = require("path");
 const { DATABASE_URL } = process.env;
 
-const sequelize = new Sequelize(DATABASE_URL, {
-  logging: false, // set to console.log to see the raw SQL queries
-  native: false, // lets Sequelize know we can use pg-native for ~30% more speed
-});
-// const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
-// const sequelize = new Sequelize(
-//   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/medconnect`,
-//   {
-//     logging: false, // set to console.log to see the raw SQL queries
-//     native: false, // lets Sequelize know we can use pg-native for ~30% more speed
-//   }
-// );
+// const sequelize = new Sequelize(DATABASE_URL, {
+//   logging: false, // set to console.log to see the raw SQL queries
+//   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+// });
+const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
+const sequelize = new Sequelize(
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/medconnect`,
+  {
+    logging: false, // set to console.log to see the raw SQL queries
+    native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+  }
+);
 const basename = path.basename(__filename);
 
 const modelDefiners = [];
@@ -62,22 +62,43 @@ const {
 
 // console.log(sequelize.models);
 
+// Medico.belongsToMany(Specialization, { through: "medicoSpecialization" });
+// Specialization.belongsToMany(Medico, { through: "medicoSpecialization" });
+
+// Medico.hasOne(MedicoCalification);
+// Medico.hasMany(Schedule);
+// Medico.hasMany(Appointment);
+// Medico.hasMany(PatientsReview);
+// // Medico.belongsTo(Office);
+// Medico.belongsTo(City);
+
+// //*DEFINIENDO RELACIONES PATIENTS
+// Patient.hasMany(PatientsReview);
+// Patient.hasMany(Appointment);
+// Patient.hasMany(Payment);
+// Patient.belongsTo(City);
+// //*DEFINIENDO RELACIONES APPOINTMENT
+// Appointment.hasOne(Payment);
+// // Appointment.belongsTo(Office);
 Medico.belongsToMany(Specialization, { through: "medicoSpecialization" });
 Specialization.belongsToMany(Medico, { through: "medicoSpecialization" });
 
 Medico.hasOne(MedicoCalification);
 Medico.hasMany(Schedule);
+
 Medico.hasMany(Appointment);
+Appointment.belongsTo(Medico);
 Medico.hasMany(PatientsReview);
 // Medico.belongsTo(Office);
 Medico.belongsTo(City);
 
-//*DEFINIENDO RELACIONES PATIENTS
+//DEFINIEDO RELACIONES PATIENTS
 Patient.hasMany(PatientsReview);
 Patient.hasMany(Appointment);
+Appointment.belongsTo(Patient);
 Patient.hasMany(Payment);
 Patient.belongsTo(City);
-//*DEFINIENDO RELACIONES APPOINTMENT
+//DEFINIEDO RELACIONES APPOINTMENT
 Appointment.hasOne(Payment);
 // Appointment.belongsTo(Office);
 

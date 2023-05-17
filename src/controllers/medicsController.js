@@ -101,7 +101,7 @@ const createMedic = async (req, res) => {
 
     newMedic.addSpecializations(body.specializations.map((el) => Number(el)));
     if (Object.keys(newMedic).length === 0) {
-      handleHttpError(res, "Error al craer medicos", 404);
+      handleHttpError(res, "Error al crear medicos", 404);
       return;
     }
     res.status(200).json(newMedic);
