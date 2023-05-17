@@ -141,12 +141,51 @@ const getMedic = async (req, res) => {
         exclude: ["cityId"],
       },
     });
+    if (!data) {
+      return res
+        .status(404)
+        .json({ message: `No existe un médico con id ${id}` });
+    }
 
     res.status(200).json(data);
   } catch (error) {
     handleHttpError(res, { error: error.message }, 404);
   }
 };
+
+const updateMedic = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { first_name, last_name, phone, direccion, specializations } =
+      req.body;
+
+    const updatedMedic = await Medico.findByPk(id);
+
+    if (!updatedMedic)
+      res.status(404).json({ error: "No se encontró el médico" });
+
+    updatedMedic.first_name = first_name;
+    updatedMedic.last_name = last_name;
+    updatedMedic.phone = phone;
+    updatedMedic.direccion = direccion;
+    await updatedMedic.save();
+
+    const medicSpecialization = await Specialization.findAll({
+      where: {
+        id: specializations,
+      },
+    });
+    if (!medicSpecialization) {
+      return res.status(404).json({ error: "Especialidad no encontrada" });
+    }
+    await updatedMedic.setSpecializations(medicSpecialization);
+
+    res.status(200).json({ message: "¡Médico actualizado exitosamente!" });
+  } catch (error) {
+    handleHttpError(res, { error: error.message }, 500);
+  }
+};
+
 const deleteMedic = async (req, res) => {
   try {
     const { id } = req.params;
@@ -156,10 +195,10 @@ const deleteMedic = async (req, res) => {
 
       await data.destroy();
     }
-    res.status(201).json({ message: "medico borrado" });
+    res.status(201).json({ message: "medico eliminado" });
   } catch (error) {
     handleHttpError(res, { error: error.message }, 404);
   }
 };
 
-module.exports = { createMedic, getMedics, getMedic, deleteMedic };
+module.exports = { createMedic, getMedics, getMedic, updateMedic, deleteMedic };

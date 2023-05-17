@@ -3,15 +3,15 @@ const { handleHttpError } = require("../utils/handleError");
 const { Op } = require("sequelize");
 
 const getPatients = async (req, res) => {
-  const { name } = req.query;
+  const { firstName } = req.query;
   try {
-    if (!name) {
+    if (!firstName) {
       const dataPatient = await Patient.findAll({
         include: [
-          // {
-          //   model: Appointment,
-          //   attributes: ["scheduledDate", "scheduledTime", "registeredDate"],
-          // },
+          {
+            model: Appointment,
+            attributes: ["scheduledDate", "scheduledTime"],
+          },
           {
             model: City,
             attributes: ["name"],
@@ -29,13 +29,13 @@ const getPatients = async (req, res) => {
     } else {
       const patientName = await Patient.findAll({
         where: {
-          name: { [Op.iLike]: name },
+          firstName: { [Op.iLike]: `%${firstName}%` },
         },
         include: [
-          // {
-          //   model: Appointment,
-          //   attributes: ["scheduledDate", "scheduledTime", "registeredDate"],
-          // },
+          {
+            model: Appointment,
+            attributes: ["scheduledDate", "scheduledTime"],
+          },
           {
             model: City,
             attributes: ["name"],
@@ -61,10 +61,10 @@ const getPatient = async (req, res) => {
     const { id } = req.params;
     const data = await Patient.findByPk(id, {
       include: [
-        // {
-        //   model: Appointment,
-        //   attributes: ["scheduledDate", "scheduledTime", "registeredDate"],
-        // },
+        {
+          model: Appointment,
+          attributes: ["scheduledDate", "scheduledTime"],
+        },
         {
           model: City,
           attributes: ["name"],
@@ -74,6 +74,12 @@ const getPatient = async (req, res) => {
         exclude: ["cityId"],
       },
     });
+    if (!data) {
+      return res
+        .status(404)
+        .json({ message: `No existe un paciente con id ${id}` });
+    }
+
     res.status(200).json(data);
   } catch (error) {
     handleHttpError(res, "No existe un paciente con ese ID", 404);
@@ -101,4 +107,46 @@ const createPatient = async (req, res) => {
   }
 };
 
-module.exports = { getPatients, getPatient, createPatient };
+const updatePatient = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { firstName, lastName, phone, direccion } = req.body;
+
+    const updated = await Patient.findByPk(id);
+
+    if (!updated) res.status(404).json({ error: "No se encontró el paciente" });
+
+    updated.firstName = firstName;
+    updated.lastName = lastName;
+    updated.phone = phone;
+    updated.direccion = direccion;
+    await updated.save();
+
+    res.status(200).json({ message: "¡Paciente actualizado exitosamente!" });
+  } catch (error) {
+    handleHttpError(res, { error: error.message }, 500);
+  }
+};
+
+const deletePatient = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedPat = await Patient.findByPk(id);
+
+    if (!deletedPat) {
+      return handleHttpError(res, `paciente con el id ${id} no encontrado`);
+    }
+    await deletedPat.destroy();
+    res.status(200).json({ message: "paciente eliminado" });
+  } catch (error) {
+    handleHttpError(res, { error: error.message }, 404);
+  }
+};
+
+module.exports = {
+  getPatients,
+  getPatient,
+  createPatient,
+  updatePatient,
+  deletePatient,
+};
