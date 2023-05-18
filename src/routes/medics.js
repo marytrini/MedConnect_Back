@@ -10,7 +10,7 @@ const {
   deleteMedic,
 } = require("../controllers/medicsController");
 
-router.get("/", authMiddleware, checkRole(["paciente"]), getMedics);
+router.get("/", authMiddleware, checkRole(["admin"]), getMedics);
 router.get("/:id", getMedic);
 router.post("/create", createMedic);
 router.put("/:id", updateMedic);

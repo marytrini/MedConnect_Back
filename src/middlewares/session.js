@@ -30,7 +30,7 @@ const authMiddleware = async (req, res, next) => {
     }
     // const token = req.headers.authorization.split(" ").pop(); //bearer token
     // const dev = cookies.session;
-    // console.log(dev);
+
     const dataToken = await verifyToken(req.cookies.session);
     console.log(dataToken);
     if (!dataToken.id) {
