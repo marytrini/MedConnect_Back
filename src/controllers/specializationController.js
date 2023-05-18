@@ -7,7 +7,7 @@ const MEDIA_PATH = `${__dirname}/../storage`;
 const getSpecializations = async (req, res) => {
   try {
     const { name } = req.query;
-    console.log(name);
+
     const data = await Specialization.findAll();
     if (name) {
       let dataByName = await data.filter((obj) =>
