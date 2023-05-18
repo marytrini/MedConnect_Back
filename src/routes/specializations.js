@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const uploadMiddleware = require("../utils/handleStorage");
+//const uploadMiddleware = require("../utils/handleStorage");
 const {
   createSpecializations,
   getSpecializations,
@@ -10,6 +10,6 @@ const {
 
 router.get("/", getSpecializations);
 router.get("/:id", getSpecialization);
-router.post("/", uploadMiddleware.single("image"), createSpecializations);
+router.post("/", createSpecializations);
 router.delete("/:id", deleteSpecializations);
 module.exports = router;

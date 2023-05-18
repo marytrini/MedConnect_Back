@@ -40,16 +40,25 @@ const getSpecialization = async (req, res) => {
 
 const createSpecializations = async (req, res) => {
   try {
-    const { file, body } = req;
+    // const { file, body } = req;
 
-    const fileData = {
-      description: body.description,
-      name: body.name,
-      url: `${PUBLIC_URL}/${file.filename}`,
-    };
+    // const fileData = {
+    //   description: body.description,
+    //   name: body.name,
+    //   url: `${PUBLIC_URL}/${file.filename}`,
+    // };
 
-    const data = await Specialization.create(fileData);
-    res.status(201).json(data);
+    // const data = await Specialization.create(fileData);
+    // res.status(201).json(data);
+
+    const { body } = req;
+    const newSpecialization = await Specialization.create(body);
+
+    if (Object.keys(newSpecialization).length === 0) {
+      handleHttpError(res, "Error al crear Especialidad", 404);
+      return;
+    }
+    res.status(200).json(newSpecialization);
   } catch (error) {
     handleHttpError(res, { error: error.message }, 500);
   }
