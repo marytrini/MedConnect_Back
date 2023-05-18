@@ -5,14 +5,16 @@ const { createServer } = require("http");
 
 const dotenv = require("dotenv");
 
+const cookieParser = require("cookie-parser");
+// const dotenv = require("dotenv");
+require("dotenv").config();
+
 const { router } = require("./routes/router.js");
 
-//start
-dotenv.config({
-  path: "./.env",
-});
 const app = express();
 const httpServer = createServer(app);
+
+app.use(cookieParser());
 
 //express vars
 app.set("port", process.env.PORT);
