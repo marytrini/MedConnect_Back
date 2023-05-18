@@ -32,6 +32,7 @@ const getAppointment = async (req, res) => {
 const createAppointment = async (req, res) => {
   try {
     const { body } = req;
+
     const newAppointment = await Appointment.create({
       scheduledDate: body.scheduledDate,
       scheduledTime: body.scheduledTime,
