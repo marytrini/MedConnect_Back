@@ -1,8 +1,7 @@
 const { DataTypes } = require("sequelize");
-const bcrypt = require("bcrypt");
-const { hashPassword } = require("../middlewares/hashPassword");
+
 module.exports = (sequelize) => {
-  const Patient = sequelize.define(
+  sequelize.define(
     "patient",
     {
       firstName: {
