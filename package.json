@@ -1,5 +1,5 @@
 {
-  "name": "metconnect",
+  "name": "medconnect",
   "version": "1.0.0",
   "description": "sistema de reserva de citas médicas",
   "main": "index.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Adhemirsab/MetConnect.git"
+    "url": "git+https://github.com/Adhemirsab/MedConnect_Back.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Adhemirsab/MetConnect/issues"
+    "url": "https://github.com/Adhemirsab/MedConnect_Back/issues"
   },
-  "homepage": "https://github.com/Adhemirsab/MetConnect#readme",
+  "homepage": "https://github.com/Adhemirsab/MedConnect_Back#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
