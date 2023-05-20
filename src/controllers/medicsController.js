@@ -3,6 +3,7 @@ const {
   Specialization,
   City,
   MedicoCalification,
+  Schedule,
 } = require("../sequelize/sequelize");
 const { handleHttpError } = require("../utils/handleError");
 const { Op } = require("sequelize");
@@ -34,9 +35,13 @@ const getMedics = async (req, res) => {
               "research",
             ],
           },
+          {
+            model: Schedule,
+            attributes: ["day_of_week", "start_time", "end_time"],
+          },
         ],
         attributes: {
-          exclude: ["cityId"],
+          exclude: ["cityId", "scheduleId"],
         },
       });
 
@@ -72,9 +77,13 @@ const getMedics = async (req, res) => {
               "research",
             ],
           },
+          {
+            model: Schedule,
+            attributes: ["day_of_week", "start_time", "end_time"],
+          },
         ],
         attributes: {
-          exclude: ["cityId"],
+          exclude: ["cityId", "scheduleId"],
         },
       });
       if (medicName.length === 0) {
@@ -136,9 +145,13 @@ const getMedic = async (req, res) => {
             "research",
           ],
         },
+        {
+          model: Schedule,
+          attributes: ["day_of_week", "start_time", "end_time"],
+        },
       ],
       attributes: {
-        exclude: ["cityId"],
+        exclude: ["cityId", "scheduleId"],
       },
     });
     if (!data) {
