@@ -1,4 +1,9 @@
-const { Appointment, Medico, Patient } = require("../sequelize/sequelize");
+const {
+  Appointment,
+  Medico,
+  Patient,
+  Specialization,
+} = require("../sequelize/sequelize");
 const { handleHttpError } = require("../utils/handleError");
 
 const getAppointment = async (req, res) => {
@@ -8,6 +13,13 @@ const getAppointment = async (req, res) => {
         {
           model: Medico,
           attributes: ["first_name", "last_name"],
+          include: [
+            {
+              model: Specialization,
+              attributes: ["name"],
+              through: { attributes: [] }, // Excluye la tabla intermedia
+            },
+          ],
         },
         {
           model: Patient,
