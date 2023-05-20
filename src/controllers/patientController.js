@@ -76,7 +76,7 @@ const getPatient = async (req, res) => {
             },
           ],
           attributes: {
-            exclude: ["medicoId", "patientId", "id"],
+            exclude: ["medicoId", "patientId"],
           },
         },
         {

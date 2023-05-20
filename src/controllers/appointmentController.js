@@ -12,7 +12,7 @@ const getAppointment = async (req, res) => {
       include: [
         {
           model: Medico,
-          attributes: ["first_name", "last_name"],
+          attributes: ["id", "first_name", "last_name"],
           include: [
             {
               model: Specialization,
@@ -23,11 +23,11 @@ const getAppointment = async (req, res) => {
         },
         {
           model: Patient,
-          attributes: ["firstName", "lastName"],
+          attributes: ["id", "firstName", "lastName"],
         },
       ],
       attributes: {
-        exclude: ["patientId", "medicoId"],
+        exclude: ["medicoId", "patientId"],
       },
     });
 
