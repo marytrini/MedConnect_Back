@@ -1,4 +1,9 @@
-const { Patient, Appointment, City } = require("../sequelize/sequelize");
+const {
+  Patient,
+  Appointment,
+  Medico,
+  City,
+} = require("../sequelize/sequelize");
 const { handleHttpError } = require("../utils/handleError");
 const { Op } = require("sequelize");
 
@@ -64,6 +69,15 @@ const getPatient = async (req, res) => {
         {
           model: Appointment,
           attributes: ["scheduledDate", "scheduledTime"],
+          include: [
+            {
+              model: Medico,
+              attributes: ["first_name", "last_name"],
+            },
+          ],
+          attributes: {
+            exclude: ["medicoId", "patientId", "id"],
+          },
         },
         {
           model: City,
