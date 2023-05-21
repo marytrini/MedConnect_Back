@@ -3,7 +3,7 @@ const { User } = require("../sequelize/sequelize");
 const { tokenSign } = require("../utils/handleJwt");
 const { encrypt, compare } = require("../utils/handlePassword");
 const { handleHttpError } = require("../utils/handleError");
-
+const CLIENT_URL = "http://localhost:3000/";
 const userGet = async (req, res) => {
   try {
     const data = await User.findAll();
@@ -71,7 +71,7 @@ const loginCtrl = async (req, res) => {
     };
 
     const expirationTime = 24 * 60 * 60 * 1000;
-    res.cookie("sess", data.token, {
+    res.cookie("localSession", data.token, {
       expires: new Date(Date.now() + expirationTime),
       httpOnly: true,
     });
@@ -82,6 +82,11 @@ const loginCtrl = async (req, res) => {
   }
 };
 
+const logoutUser = (req, res) => {
+  res.clearCookie("localSession");
+  // res.send("Logged out successfully");
+  res.redirect(CLIENT_URL);
+};
 const loginSuccess = (req, res) => {
   if (req.user) {
     res.status(200).json({
@@ -92,4 +97,4 @@ const loginSuccess = (req, res) => {
   }
 };
 
-module.exports = { registerCtrl, loginCtrl, userGet, loginSuccess };
+module.exports = { registerCtrl, loginCtrl, userGet, loginSuccess, logoutUser };

@@ -6,6 +6,7 @@ const {
   loginCtrl,
   userGet,
   loginSuccess,
+  logoutUser,
 } = require("../controllers/authController");
 const {
   validatorRegisterUser,
@@ -13,6 +14,7 @@ const {
 } = require("../validators/authValidator");
 router.get("/", userGet);
 router.get("/loginn/success", authMiddleware, loginSuccess);
+router.get("/logoutLocal", logoutUser);
 router.post("/register", validatorRegisterUser, registerCtrl);
 router.post("/login", validatorLoginUser, loginCtrl);
 module.exports = router;
