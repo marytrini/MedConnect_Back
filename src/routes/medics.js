@@ -10,10 +10,11 @@ const {
   deleteMedic,
 } = require("../controllers/medicsController");
 
-router.get("/", authMiddleware, checkRole(["admin"]), getMedics);
+router.get("/", getMedics);
 router.get("/:id", getMedic);
 router.post("/create", createMedic);
 router.put("/:id", updateMedic);
 router.delete("/:id", deleteMedic);
 
 module.exports = router;
+// authMiddleware, checkRole(["admin"])

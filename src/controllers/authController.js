@@ -32,7 +32,8 @@ const registerCtrl = async (req, res) => {
     // Check if email is already registered
     const user = await User.findOne({ where: { email: req.email } });
     if (user) {
-      return res.status(409).json({ error: "EMAIL_ALREADY_REGISTERED" });
+      // return res.status(409).json({ error: "EMAIL_ALREADY_REGISTERED" });
+      handleHttpError(res, "EMAIL_ALREADY_REGISTERED", 409);
     }
     const password = await encrypt(req.password);
     const body = { ...req, password };
@@ -96,7 +97,7 @@ const loginCtrl = async (req, res) => {
     };
 
     const expirationTime = 24 * 60 * 60 * 1000;
-    res.cookie("session", data.token, {
+    res.cookie("localSession", data.token, {
       expires: new Date(Date.now() + expirationTime),
       httpOnly: true,
     });
@@ -107,4 +108,19 @@ const loginCtrl = async (req, res) => {
   }
 };
 
-module.exports = { registerCtrl, loginCtrl, userGet };
+const logoutUser = (req, res) => {
+  res.clearCookie("localSession");
+  // res.send("Logged out successfully");
+  res.redirect(CLIENT_URL);
+};
+const loginSuccess = (req, res) => {
+  if (req.user) {
+    res.status(200).json({
+      success: true,
+      message: "successfull",
+      user: req.user,
+    });
+  }
+};
+
+module.exports = { registerCtrl, loginCtrl, userGet, loginSuccess, logoutUser };
