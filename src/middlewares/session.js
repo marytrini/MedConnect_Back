@@ -31,8 +31,8 @@ const authMiddleware = async (req, res, next) => {
     // const token = req.headers.authorization.split(" ").pop(); //bearer token
     // const dev = cookies.session;
 
-    const dataToken = await verifyToken(req.cookies.session);
-    console.log(dataToken);
+    const dataToken = await verifyToken(req.cookies.sess);
+
     if (!dataToken.id) {
       handleHttpError(res, "ERROR_ID_TOKEN", 401);
       return;
