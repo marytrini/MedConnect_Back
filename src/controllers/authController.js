@@ -3,6 +3,16 @@ const { User } = require("../sequelize/sequelize");
 const { tokenSign } = require("../utils/handleJwt");
 const { encrypt, compare } = require("../utils/handlePassword");
 const { handleHttpError } = require("../utils/handleError");
+const nodemailer = require("nodemailer");
+const { USER_EMAIL, PASSWORD_EMAIL } = process.env;
+
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: USER_EMAIL,
+    pass: PASSWORD_EMAIL,
+  },
+});
 
 const userGet = async (req, res) => {
   try {
@@ -32,6 +42,23 @@ const registerCtrl = async (req, res) => {
       token: await tokenSign(dataUser),
       user: dataUser,
     };
+
+    // Enviar correo electrónico de confirmación o bienvenida al usuario
+    const mailOptions = {
+      from: USER_EMAIL,
+      to: req.email,
+      subject: "¡Bienvenido a nuestra aplicación!",
+      text: "Gracias por registrarte en nuestra aplicación. Esperamos que disfrutes de tu experiencia.",
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Correo electrónico enviado: " + info.response);
+      }
+    });
+
     res.status(201).json(data);
   } catch (error) {
     handleHttpError(res, "ERROR_REGISTRO");
