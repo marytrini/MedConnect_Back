@@ -1,19 +1,26 @@
 const express = require("express");
 
+require("dotenv").config();
+const passportSetup = require("./config/passport");
 const passport = require("passport");
 const { createServer } = require("http");
-
-const dotenv = require("dotenv");
-
+const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
-// const dotenv = require("dotenv");
-require("dotenv").config();
 
 const { router } = require("./routes/router.js");
 
 const app = express();
 const httpServer = createServer(app);
 
+app.use(
+  cookieSession({
+    name: "session",
+    keys: [process.env.JWT_SECRET],
+    maxAge: 24 * 60 * 60 * 100,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(cookieParser());
 
 //express vars

@@ -3,7 +3,7 @@ const { User } = require("../sequelize/sequelize");
 const { tokenSign } = require("../utils/handleJwt");
 const { encrypt, compare } = require("../utils/handlePassword");
 const { handleHttpError } = require("../utils/handleError");
-
+const CLIENT_URL = "http://localhost:3000/";
 const userGet = async (req, res) => {
   try {
     const data = await User.findAll();
@@ -22,7 +22,8 @@ const registerCtrl = async (req, res) => {
     // Check if email is already registered
     const user = await User.findOne({ where: { email: req.email } });
     if (user) {
-      return res.status(409).json({ error: "EMAIL_ALREADY_REGISTERED" });
+      // return res.status(409).json({ error: "EMAIL_ALREADY_REGISTERED" });
+      handleHttpError(res, "EMAIL_ALREADY_REGISTERED", 409);
     }
     const password = await encrypt(req.password);
     const body = { ...req, password };
@@ -32,6 +33,7 @@ const registerCtrl = async (req, res) => {
       token: await tokenSign(dataUser),
       user: dataUser,
     };
+
     res.status(201).json(data);
   } catch (error) {
     handleHttpError(res, "ERROR_REGISTRO");
@@ -69,7 +71,7 @@ const loginCtrl = async (req, res) => {
     };
 
     const expirationTime = 24 * 60 * 60 * 1000;
-    res.cookie("session", data.token, {
+    res.cookie("localSession", data.token, {
       expires: new Date(Date.now() + expirationTime),
       httpOnly: true,
     });
@@ -80,4 +82,19 @@ const loginCtrl = async (req, res) => {
   }
 };
 
-module.exports = { registerCtrl, loginCtrl, userGet };
+const logoutUser = (req, res) => {
+  res.clearCookie("localSession");
+  // res.send("Logged out successfully");
+  res.redirect(CLIENT_URL);
+};
+const loginSuccess = (req, res) => {
+  if (req.user) {
+    res.status(200).json({
+      success: true,
+      message: "successfull",
+      user: req.user,
+    });
+  }
+};
+
+module.exports = { registerCtrl, loginCtrl, userGet, loginSuccess, logoutUser };

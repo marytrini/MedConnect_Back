@@ -17,3 +17,4 @@ router.put("/:id", updateMedic);
 router.delete("/:id", deleteMedic);
 
 module.exports = router;
+// authMiddleware, checkRole(["admin"])
