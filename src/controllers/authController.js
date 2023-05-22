@@ -5,6 +5,7 @@ const { encrypt, compare } = require("../utils/handlePassword");
 const { handleHttpError } = require("../utils/handleError");
 const transporter = require("../config/mailer");
 const { USER_EMAIL } = process.env;
+const CLIENT_URL = "http://localhost:3000/";
 
 const userGet = async (req, res) => {
   try {
