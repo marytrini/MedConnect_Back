@@ -7,17 +7,6 @@ const transporter = require("../config/mailer");
 const { USER_EMAIL } = process.env;
 const CLIENT_URL = "http://localhost:3000/";
 
-const userGet = async (req, res) => {
-  try {
-    const data = await User.findAll();
-    if (!data || data.length === 0) {
-      return handleHttpError(res, "USUARIOS_NO_ENCONTRADOS");
-    }
-    res.status(200).json(data);
-  } catch (error) {
-    handleHttpError(res, "ERROR_OBTENER_USUARIOS");
-  }
-};
 const registerCtrl = async (req, res) => {
   try {
     req = matchedData(req);
@@ -110,4 +99,4 @@ const loginSuccess = (req, res) => {
   }
 };
 
-module.exports = { registerCtrl, loginCtrl, userGet, loginSuccess, logoutUser };
+module.exports = { registerCtrl, loginCtrl, loginSuccess, logoutUser };

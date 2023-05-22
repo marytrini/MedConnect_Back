@@ -88,9 +88,33 @@ const deleteSpecializations = async (req, res) => {
   }
 };
 
+const updateSpecialization = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, url, description } = req.body;
+
+    const updatedSpec = await Specialization.findByPk(id);
+
+    if (!updatedSpec)
+      res
+        .status(404)
+        .json({ error: `No se encontró una especialidad con id ${id}` });
+
+    updatedSpec.name = name;
+    updatedSpec.url = url;
+    updatedSpec.description = description;
+    await updatedSpec.save();
+
+    res.status(200).json({ message: "¡Especialidad actualizada!" });
+  } catch (error) {
+    handleHttpError(res, { error: error.message }, 500);
+  }
+};
+
 module.exports = {
   createSpecializations,
   getSpecializations,
   deleteSpecializations,
   getSpecialization,
+  updateSpecialization,
 };
