@@ -3,17 +3,9 @@ const { User } = require("../sequelize/sequelize");
 const { tokenSign } = require("../utils/handleJwt");
 const { encrypt, compare } = require("../utils/handlePassword");
 const { handleHttpError } = require("../utils/handleError");
-// const nodemailer = require("nodemailer");
-// const { USER_EMAIL, PASSWORD_EMAIL } = process.env;
-
-// const transporter = nodemailer.createTransport({
-//   service: "Gmail",
-//   auth: {
-//     user: USER_EMAIL,
-//     pass: PASSWORD_EMAIL,
-//   },
-// });
-const CLIENT_URL = "http://localhost:3000";
+const transporter = require("../config/mailer");
+const { USER_EMAIL } = process.env;
+const CLIENT_URL = "http://localhost:3000/";
 
 const userGet = async (req, res) => {
   try {
@@ -45,21 +37,15 @@ const registerCtrl = async (req, res) => {
       user: dataUser,
     };
 
-    // Enviar correo electrónico de confirmación o bienvenida al usuario
-    // const mailOptions = {
-    //   from: USER_EMAIL,
-    //   to: req.email,
-    //   subject: "¡Bienvenido a nuestra aplicación!",
-    //   text: "Gracias por registrarte en nuestra aplicación. Esperamos que disfrutes de tu experiencia.",
-    // };
+    //Enviar correo electrónico de confirmación o bienvenida al usuario
 
-    // transporter.sendMail(mailOptions, function (error, info) {
-    //   if (error) {
-    //     console.log(error);
-    //   } else {
-    //     console.log("Correo electrónico enviado: " + info.response);
-    //   }
-    // });
+    await transporter.sendMail({
+      from: '"Medconnect" <services.medconnect@gmail.com>', // sender address
+      to: req.email, // list of receivers
+      subject: "¡Bienvenido a nuestra aplicación!", // Subject line
+      text: "Gracias por registrarte en nuestra aplicación. Esperamos que disfrutes de tu experiencia.", // plain text body
+      //html: "<b>Hello world?</b>", // html body
+    });
 
     res.status(201).json(data);
   } catch (error) {
