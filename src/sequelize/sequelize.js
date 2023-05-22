@@ -3,18 +3,18 @@ const fs = require("fs");
 const path = require("path");
 const { DATABASE_URL } = process.env;
 
-const sequelize = new Sequelize(DATABASE_URL, {
-  logging: false, // set to console.log to see the raw SQL queries
-  native: false, // lets Sequelize know we can use pg-native for ~30% more speed
-});
-// const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
-// const sequelize = new Sequelize(
-//   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/medconnect`,
-//   {
-//     logging: false, // set to console.log to see the raw SQL queries
-//     native: false, // lets Sequelize know we can use pg-native for ~30% more speed
-//   }
-// );
+// const sequelize = new Sequelize(DATABASE_URL, {
+//   logging: false, // set to console.log to see the raw SQL queries
+//   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+// });
+const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
+const sequelize = new Sequelize(
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/medconnect`,
+  {
+    logging: false, // set to console.log to see the raw SQL queries
+    native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+  }
+);
 
 const basename = path.basename(__filename);
 
@@ -64,6 +64,9 @@ const {
 Medico.belongsToMany(Specialization, { through: "medicoSpecialization" });
 Specialization.belongsToMany(Medico, { through: "medicoSpecialization" });
 
+User.hasOne(Medico);
+Medico.belongsTo(User);
+
 Medico.hasOne(MedicoCalification);
 Medico.hasMany(Schedule);
 Schedule.belongsTo(Medico);
@@ -74,10 +77,15 @@ Medico.hasMany(PatientsReview);
 // Medico.belongsTo(Office);
 Medico.belongsTo(City);
 
-//DEFINIEDO RELACIONES PATIENTS
+//* DEFINIEDO RELACIONES PATIENTS
+User.hasOne(Patient);
+Patient.belongsTo(User);
+
 Patient.hasMany(PatientsReview);
+
 Patient.hasMany(Appointment);
 Appointment.belongsTo(Patient);
+
 Patient.hasMany(Payment);
 Patient.belongsTo(City);
 //DEFINIEDO RELACIONES APPOINTMENT
