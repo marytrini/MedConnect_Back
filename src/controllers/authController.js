@@ -13,6 +13,7 @@ const { handleHttpError } = require("../utils/handleError");
 //     pass: PASSWORD_EMAIL,
 //   },
 // });
+const CLIENT_URL = "http://localhost:3000";
 
 const userGet = async (req, res) => {
   try {
