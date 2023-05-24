@@ -7,7 +7,7 @@ const getSchedule = async (req, res) => {
       include: [
         {
           model: Medico,
-          attributes: ["first_name", "last_name"],
+          attributes: ["phone", "direccion"],
         },
       ],
       attributes: {

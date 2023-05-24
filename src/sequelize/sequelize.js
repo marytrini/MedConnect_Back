@@ -96,7 +96,7 @@ User.hasMany(Appointment);
 Appointment.belongsTo(User);
 
 User.hasMany(PatientsReview);
-PatientsReview.hasMany(User);
+PatientsReview.belongsTo(User);
 
 //*DEFINIENDO RELACIONES ADMINISTRATOR
 Administrator.belongsTo(City);

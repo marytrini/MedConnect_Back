@@ -1,6 +1,10 @@
 const { User } = require("../sequelize/sequelize");
 const { handleHttpError } = require("../utils/handleError");
-const { Patient, Appointment } = require("../sequelize/sequelize");
+const {
+  Patient,
+  Appointment,
+  PatientsReview,
+} = require("../sequelize/sequelize");
 const { Op } = require("sequelize");
 
 const userGet = async (req, res) => {
@@ -31,7 +35,7 @@ const userGet = async (req, res) => {
         },
       ],
       attributes: {
-        exclude: ["appointmentId", "cityId", "userId"],
+        exclude: ["appointmentId", "cityId", "userId", "patientsReviewId"],
       },
     });
     if (!data || data.length === 0) {
