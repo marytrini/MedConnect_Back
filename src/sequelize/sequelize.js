@@ -59,7 +59,7 @@ const {
   User,
 } = sequelize.models;
 
-//*DEFINIENDO RELACIONES MEDICOS
+//DEFINIENDO RELACIONES MEDICOS
 
 Medico.belongsToMany(Specialization, { through: "medicoSpecialization" });
 Specialization.belongsToMany(Medico, { through: "medicoSpecialization" });
@@ -71,14 +71,15 @@ Medico.hasOne(MedicoCalification);
 Medico.hasMany(Schedule);
 Schedule.belongsTo(Medico);
 
-Medico.hasMany(Appointment);
-Appointment.belongsTo(Medico);
-Medico.hasMany(PatientsReview);
 // Medico.belongsTo(Office);
 Medico.belongsTo(City);
 
-//* DEFINIEDO RELACIONES PATIENTS
-User.hasOne(Patient);
+// DEFINIEDO RELACIONES PATIENTS
+User.hasMany(Patient, {
+  foreignKey: "userId",
+  onDelete: "CASCADE", // Eliminación en cascada: eliminará automáticamente los pacientes relacionados
+  hooks: true, // Habilitar los hooks (ganchos) para ejecutar acciones antes y después de la eliminación
+});
 Patient.belongsTo(User);
 
 Patient.hasMany(PatientsReview);
@@ -88,9 +89,14 @@ Appointment.belongsTo(Patient);
 
 Patient.hasMany(Payment);
 Patient.belongsTo(City);
-//DEFINIEDO RELACIONES APPOINTMENT
 Appointment.hasOne(Payment);
 // Appointment.belongsTo(Office);
+// * DEFINIEDO RELACIONES USERS
+User.hasMany(Appointment);
+Appointment.belongsTo(User);
+
+User.hasMany(PatientsReview);
+PatientsReview.hasMany(User);
 
 //*DEFINIENDO RELACIONES ADMINISTRATOR
 Administrator.belongsTo(City);

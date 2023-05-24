@@ -5,7 +5,7 @@ module.exports = (sequelize) => {
     "schedule",
     {
       day_of_week: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       start_time: {
