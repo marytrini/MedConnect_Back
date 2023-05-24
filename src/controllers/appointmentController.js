@@ -49,8 +49,8 @@ const createAppointment = async (req, res) => {
       scheduledDate: body.scheduledDate,
       scheduledTime: body.scheduledTime,
       status: body.status,
-      medicoId: body.medicoId,
       patientId: body.patientId,
+      userId: body.userId,
     });
 
     if (newAppointment) {

@@ -15,7 +15,7 @@ app.set("port", process.env.PORT || 4000);
 //   // });
 
 // });
-conn.sync({ force: false });
+conn.sync({ force: true });
 httpServer.listen(
   app.get("port"),
   console.log(`Server running on: http://localhost:${app.get("port")}`)
