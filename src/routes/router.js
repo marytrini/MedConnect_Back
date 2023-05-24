@@ -23,6 +23,10 @@ router.use("/patients", patients);
 router.use("/auth", auth);
 router.use("/auth", authTerceros);
 router.use("/users", users);
+<<<<<<< HEAD
+=======
+
+>>>>>>> f11849f44d6e4946a0b141bda1e16b6bbcb0def0
 module.exports = {
   router,
 };

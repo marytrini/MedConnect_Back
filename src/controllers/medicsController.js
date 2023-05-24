@@ -62,7 +62,6 @@ const getMedics = async (req, res) => {
     handleHttpError(res, { error: error.message }, 500);
   }
 };
-
 const createMedic = async (req, res) => {
   try {
     const { body } = req;
@@ -71,8 +70,8 @@ const createMedic = async (req, res) => {
       last_name: body.last_name,
       phone: body.phone,
       direccion: body.direccion,
-      cityId: body.cityId,
       userId: body.userId,
+      cityId: body.cityId,
     });
 
     newMedic.addSpecializations(body.specializations.map((el) => Number(el)));
@@ -129,7 +128,7 @@ const getMedic = async (req, res) => {
     if (!dataById) {
       return res
         .status(404)
-        .json({ message: `No existe un médico con id ${id}` });
+        .json({ message: ` No existe un médico con id ${id}` });
     }
 
     res.status(200).json(dataById);
@@ -137,7 +136,6 @@ const getMedic = async (req, res) => {
     handleHttpError(res, { error: error.message }, 404);
   }
 };
-
 const updateMedic = async (req, res) => {
   try {
     const { id } = req.params;

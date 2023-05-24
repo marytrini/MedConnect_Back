@@ -8,7 +8,6 @@ const {
 
 router.get("/", userGet);
 router.get("/:id", getUserId);
-router.put("/:id");
 router.delete("/:id", deleteUser);
 
 module.exports = router;

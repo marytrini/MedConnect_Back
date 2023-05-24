@@ -3,6 +3,7 @@ const {
   Medico,
   Patient,
   Specialization,
+  User,
 } = require("../sequelize/sequelize");
 const { handleHttpError } = require("../utils/handleError");
 
@@ -11,23 +12,21 @@ const getAppointment = async (req, res) => {
     const citas = await Appointment.findAll({
       include: [
         {
-          model: Medico,
-          attributes: ["id", "first_name", "last_name"],
-          include: [
-            {
-              model: Specialization,
-              attributes: ["name"],
-              through: { attributes: [] }, // Excluye la tabla intermedia
-            },
-          ],
-        },
-        {
           model: Patient,
           attributes: ["id", "firstName", "lastName"],
         },
+        {
+          model: User,
+          where: {
+            role: "medico",
+          },
+          attributes: {
+            exclude: ["password"],
+          },
+        },
       ],
       attributes: {
-        exclude: ["medicoId", "patientId"],
+        exclude: ["userId", "patientId"],
       },
     });
 
@@ -49,8 +48,8 @@ const createAppointment = async (req, res) => {
       scheduledDate: body.scheduledDate,
       scheduledTime: body.scheduledTime,
       status: body.status,
-      patientId: body.patientId,
       userId: body.userId,
+      patientId: body.patientId,
     });
 
     if (newAppointment) {

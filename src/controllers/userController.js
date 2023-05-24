@@ -1,5 +1,11 @@
-const { User, Patient } = require("../sequelize/sequelize");
+const { User } = require("../sequelize/sequelize");
 const { handleHttpError } = require("../utils/handleError");
+const {
+  Patient,
+  Appointment,
+  PatientsReview,
+} = require("../sequelize/sequelize");
+const { Op } = require("sequelize");
 
 const userGet = async (req, res) => {
   try {
@@ -16,23 +22,25 @@ const userGet = async (req, res) => {
       include: [
         {
           model: Patient,
-          attributes: [
-            "id",
-            "firstName",
-            "lastName",
-            "phone",
-            "email",
-            "direccion",
-            "dni",
-            "observaciones",
+          attributes: ["id", "firstName", "lastName", "email"],
+        },
+        {
+          model: Appointment,
+          attributes: ["scheduledDate", "scheduledTime", "status"],
+          include: [
+            {
+              model: Patient,
+            },
           ],
         },
       ],
+      attributes: {
+        exclude: ["appointmentId", "cityId", "userId", "patientsReviewId"],
+      },
     });
     if (!data || data.length === 0) {
       return handleHttpError(res, "USUARIOS_NO_ENCONTRADOS");
     }
-
     const newData = data.map((user) => {
       if (user.role === "medico" || user.role === "admin") {
         const { patients, ...userWithoutPatients } = user.get({ plain: true });
@@ -41,6 +49,7 @@ const userGet = async (req, res) => {
         return user;
       }
     });
+
     res.status(200).json(newData);
   } catch (error) {
     console.log(error);
@@ -79,6 +88,7 @@ const getUserId = async (req, res) => {
     handleHttpError(res, "No existe un usuario con ese id", 404);
   }
 };
+
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;

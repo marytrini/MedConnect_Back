@@ -134,6 +134,9 @@ const updatePatient = async (req, res) => {
     updated.lastName = lastName;
     updated.phone = phone;
     updated.direccion = direccion;
+    updated.email = email;
+    updated.dni = dni;
+    updated.observaciones = observaciones;
     await updated.save();
 
     res.status(200).json({ message: "¡Paciente actualizado exitosamente!" });
