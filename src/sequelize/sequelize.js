@@ -64,8 +64,16 @@ const {
 Medico.belongsToMany(Specialization, { through: "medicoSpecialization" });
 Specialization.belongsToMany(Medico, { through: "medicoSpecialization" });
 
-User.hasOne(Medico);
-Medico.belongsTo(User);
+// User.hasOne(Medico);
+// Medico.belongsTo(User);
+User.hasOne(Medico, {
+  foreignKey: "userId",
+  as: "medico",
+});
+
+Medico.belongsTo(User, {
+  foreignKey: "userId",
+});
 
 Medico.hasOne(MedicoCalification);
 Medico.hasMany(Schedule);
@@ -96,7 +104,7 @@ User.hasMany(Appointment);
 Appointment.belongsTo(User);
 
 User.hasMany(PatientsReview);
-PatientsReview.hasMany(User);
+PatientsReview.belongsTo(User);
 
 //*DEFINIENDO RELACIONES ADMINISTRATOR
 Administrator.belongsTo(City);
