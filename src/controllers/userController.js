@@ -105,4 +105,29 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { userGet, getUserId, deleteUser };
+const restoreUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleted = await User.findByPk(id, { paranoid: false });
+
+    if (!deleted) {
+      return handleHttpError(res, `Usuario con id ${id} no encontrado`);
+    }
+
+    // Verificar si el usuario está marcado como eliminado
+    if (deleted.deletedAt === null) {
+      return handleHttpError(
+        res,
+        `El usuario con id ${id} no ha sido eliminado`
+      );
+    }
+
+    // Restaurar el usuario
+    await deleted.restore();
+
+    res.status(200).json({ message: "Usuario restaurado" });
+  } catch (error) {
+    handleHttpError(res, { error: error.message }, 404);
+  }
+};
+module.exports = { userGet, getUserId, deleteUser, restoreUser };
