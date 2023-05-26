@@ -15,6 +15,9 @@ const userGet = async (req, res) => {
         "first_name",
         "last_name",
         "email",
+        "phone",
+        "direccion",
+        "DNI",
         "role",
         "createdAt",
         "updatedAt",
@@ -130,4 +133,5 @@ const restoreUser = async (req, res) => {
     handleHttpError(res, { error: error.message }, 404);
   }
 };
+
 module.exports = { userGet, getUserId, deleteUser, restoreUser };
