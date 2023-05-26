@@ -4,6 +4,8 @@ const { createOrder } = require("../controllers/paymentsController");
 
 router.post("/create-order", createOrder);
 router.get("/success", (req, res) => {});
+router.get("/failure", (req, res) => {});
+router.get("/pending", (req, res) => {});
 router.get("/webhook", (req, res) => {});
 
 module.exports = router;

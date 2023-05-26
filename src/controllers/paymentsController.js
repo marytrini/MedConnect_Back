@@ -18,6 +18,12 @@ const createOrder = async (req, res) => {
           quantity: 1,
         },
       ],
+      back_urls: {
+        success: "http://localhost:3000/success",
+        failure: "http://localhost:3000/failure",
+        pending: "http://localhost:3000/pending",
+      },
+      notification_url: "http://localhost:3000/webhook",
     });
     console.log(result);
 
