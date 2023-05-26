@@ -15,9 +15,6 @@ const userGet = async (req, res) => {
         "first_name",
         "last_name",
         "email",
-        "phone",
-        "direccion",
-        "DNI",
         "role",
         "createdAt",
         "updatedAt",
@@ -25,7 +22,14 @@ const userGet = async (req, res) => {
       include: [
         {
           model: Patient,
-          attributes: ["id", "firstName", "lastName", "email"],
+          attributes: [
+            "id",
+            "firstName",
+            "lastName",
+            "email",
+            "phone",
+            "direccion",
+          ],
         },
         {
           model: Appointment,
