@@ -15,9 +15,6 @@ const userGet = async (req, res) => {
         "first_name",
         "last_name",
         "email",
-        "phone",
-        "direccion",
-        "DNI",
         "role",
         "createdAt",
         "updatedAt",
@@ -34,6 +31,12 @@ const userGet = async (req, res) => {
             "direccion",
             "dni",
             "observaciones",
+          ],
+          include: [
+            {
+              model: Appointment,
+              attributes: ["scheduledDate", "scheduledTime", "status"],
+            },
           ],
         },
         {
@@ -62,7 +65,26 @@ const userGet = async (req, res) => {
       }
     });
 
-    res.status(200).json(newData);
+    const newDataFiltered = newData.map((user) => {
+      if (user.role === "admin") {
+        const { appointments, ...userWithoutPatients } = user;
+        return userWithoutPatients;
+      } else {
+        return user;
+      }
+    });
+    const dataFinal = newDataFiltered.map((user) => {
+      if (user.role === "paciente") {
+        const { appointments, ...userWithoutPatients } = user.get({
+          plain: true,
+        });
+        return userWithoutPatients;
+      } else {
+        return user;
+      }
+    });
+
+    res.status(200).json({ dataFinal });
   } catch (error) {
     console.log(error);
     handleHttpError(res, "ERROR_OBTENER_USUARIOS");
