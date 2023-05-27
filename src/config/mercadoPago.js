@@ -19,7 +19,7 @@ const preference = {
     failure: `${PUBLIC_URL}/failure`,
     pending: `${PUBLIC_URL}/pending`,
   },
-  notification_url: "https://afa6-38-25-16-6.sa.ngrok.io/webhook",
+  notification_url: "https://medconnectback-production.up.railway.app/webhook",
 };
 
 module.exports = preference;

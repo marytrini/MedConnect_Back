@@ -37,7 +37,7 @@ app.use(require("morgan")("dev"));
 // );
 app.use(
   require("cors")({
-    origin: "http://localhost:3000",
+    origin: "https://med-connect-front.vercel.app/",
     credentials: true,
   })
 );
