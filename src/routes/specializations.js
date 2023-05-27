@@ -6,10 +6,14 @@ const {
   getSpecializations,
   deleteSpecializations,
   getSpecialization,
+  updateSpecialization,
+  restoreSpec,
 } = require("../controllers/specializationController");
 
 router.get("/", getSpecializations);
 router.get("/:id", getSpecialization);
 router.post("/", createSpecializations);
+router.put("/:id", updateSpecialization);
 router.delete("/:id", deleteSpecializations);
+router.patch("/:id", restoreSpec);
 module.exports = router;

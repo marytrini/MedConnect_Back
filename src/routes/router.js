@@ -11,6 +11,8 @@ const medicoCalification = require("./medico-calification.js");
 const medicalSchedule = require("./medicalSchedule.js");
 const auth = require("./auth.js");
 const authTerceros = require("./authTerceros.js");
+const users = require("./users.js");
+const payment = require("./payment.js");
 
 router.use("/specializations", specializations);
 router.use("/appointment", appointment);
@@ -21,6 +23,8 @@ router.use("/schedule", medicalSchedule);
 router.use("/patients", patients);
 router.use("/auth", auth);
 router.use("/auth", authTerceros);
+router.use("/users", users);
+router.use("/payment", payment);
 
 module.exports = {
   router,

@@ -3,10 +3,10 @@ const fs = require("fs");
 const path = require("path");
 const { DATABASE_URL } = process.env;
 
- const sequelize = new Sequelize(DATABASE_URL, {
+const sequelize = new Sequelize(DATABASE_URL, {
   logging: false, // set to console.log to see the raw SQL queries
-   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
- });
+  native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+});
 // const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
 // const sequelize = new Sequelize(
 //   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/medconnect`,
@@ -44,6 +44,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 // Para relacionarlos hacemos un destructuring
 
 // console.log(sequelize.models);
+
 const {
   Specialization,
   Medico,
@@ -59,34 +60,48 @@ const {
   User,
 } = sequelize.models;
 
-//*DEFINIENDO RELACIONES MEDICOS
+//DEFINIENDO RELACIONES MEDICOS
 
 Medico.belongsToMany(Specialization, { through: "medicoSpecialization" });
 Specialization.belongsToMany(Medico, { through: "medicoSpecialization" });
+
+User.hasOne(Medico);
+Medico.belongsTo(User);
 
 Medico.hasOne(MedicoCalification);
 Medico.hasMany(Schedule);
 Schedule.belongsTo(Medico);
 
-Medico.hasMany(Appointment);
-Appointment.belongsTo(Medico);
-Medico.hasMany(PatientsReview);
 // Medico.belongsTo(Office);
 Medico.belongsTo(City);
 
-//DEFINIEDO RELACIONES PATIENTS
+// DEFINIEDO RELACIONES PATIENTS
+User.hasMany(Patient, {
+  foreignKey: "userId",
+  onDelete: "CASCADE", // Eliminación en cascada: eliminará automáticamente los pacientes relacionados
+  hooks: true, // Habilitar los hooks (ganchos) para ejecutar acciones antes y después de la eliminación
+});
+Patient.belongsTo(User);
+
 Patient.hasMany(PatientsReview);
+
 Patient.hasMany(Appointment);
 Appointment.belongsTo(Patient);
+
 Patient.hasMany(Payment);
 Patient.belongsTo(City);
-//DEFINIEDO RELACIONES APPOINTMENT
 Appointment.hasOne(Payment);
 // Appointment.belongsTo(Office);
+// * DEFINIEDO RELACIONES USERS
+User.hasMany(Appointment);
+Appointment.belongsTo(User);
+
+User.hasMany(PatientsReview);
+PatientsReview.belongsTo(User);
 
 //*DEFINIENDO RELACIONES ADMINISTRATOR
 Administrator.belongsTo(City);
 module.exports = {
-  ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
+  ...sequelize.models, // para \poder importar los modelos así: const { Product, User } = require('./db.js');
   conn: sequelize, // para importart la conexión { conn } = require('./db.js');
 };

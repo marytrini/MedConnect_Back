@@ -40,17 +40,6 @@ const getSpecialization = async (req, res) => {
 
 const createSpecializations = async (req, res) => {
   try {
-    // const { file, body } = req;
-
-    // const fileData = {
-    //   description: body.description,
-    //   name: body.name,
-    //   url: `${PUBLIC_URL}/${file.filename}`,
-    // };
-
-    // const data = await Specialization.create(fileData);
-    // res.status(201).json(data);
-
     const { body } = req;
     const newSpecialization = await Specialization.create(body);
 
@@ -63,28 +52,67 @@ const createSpecializations = async (req, res) => {
     handleHttpError(res, { error: error.message }, 500);
   }
 };
+
+const updateSpecialization = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, url, description } = req.body;
+
+    const updatedSpec = await Specialization.findByPk(id);
+
+    if (!updatedSpec)
+      res
+        .status(404)
+        .json({ error: `No se encontró una especialidad con id ${id}` });
+
+    updatedSpec.name = name;
+    updatedSpec.url = url;
+    updatedSpec.description = description;
+    await updatedSpec.save();
+
+    res.status(200).json({ message: "¡Especialidad actualizada!" });
+  } catch (error) {
+    handleHttpError(res, { error: error.message }, 500);
+  }
+};
+
 const deleteSpecializations = async (req, res) => {
   try {
     const { id } = req.params;
-    const dataFile = await Specialization.findByPk(id);
-    // console.log(dataFile);
-    if (!dataFile) {
-      handleHttpError(res, `Specialization with ID ${id} not found`, 404);
-    }
-    await dataFile.destroy();
+    const deletedSpec = await Specialization.findByPk(id);
 
-    const { url } = dataFile;
-    const filename = url.split("/").pop();
-    console.log(url);
-    const filePath = `${MEDIA_PATH}/${filename}`;
-    fs.unlinkSync(filePath);
-    const data = {
-      filePath,
-      deleted: 1,
-    };
-    res.send({ data });
+    if (!deletedSpec) {
+      return handleHttpError(res, `Especialidad con id ${id} no encontrada`);
+    }
+    await deletedSpec.destroy();
+
+    res.status(200).json({ message: "Especialidad eliminada" });
   } catch (error) {
-    handleHttpError(res, { error: error.message }, 500);
+    handleHttpError(res, { error: error.message }, 404);
+  }
+};
+
+const restoreSpec = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleted = await Specialization.findByPk(id, { paranoid: false });
+
+    if (!deleted) {
+      return handleHttpError(res, `Especilidad con id ${id} no encontrada`);
+    }
+    // Verificar si el usuario está marcado como eliminado
+    if (deleted.deletedAt === null) {
+      return handleHttpError(
+        res,
+        `La especialidad con id ${id} no ha sido eliminado`
+      );
+    }
+    //Restaurar el usuario
+    await deleted.restore();
+
+    res.status(200).json({ message: "Especialidad restaurada" });
+  } catch (error) {
+    handleHttpError(res, { error: error.message }, 404);
   }
 };
 
@@ -93,4 +121,6 @@ module.exports = {
   getSpecializations,
   deleteSpecializations,
   getSpecialization,
+  updateSpecialization,
+  restoreSpec,
 };

@@ -16,13 +16,9 @@ module.exports = (sequelize) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
-      reviewDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
     },
     {
-      timestamps: false,
+      timestamps: true,
     }
   );
 };

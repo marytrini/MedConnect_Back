@@ -3,29 +3,10 @@ const { User } = require("../sequelize/sequelize");
 const { tokenSign } = require("../utils/handleJwt");
 const { encrypt, compare } = require("../utils/handlePassword");
 const { handleHttpError } = require("../utils/handleError");
-const nodemailer = require("nodemailer");
-const { USER_EMAIL, PASSWORD_EMAIL } = process.env;
-const CLIENT_URL = "http://localhost:3000/";
+const transporter = require("../config/mailer");
+const { USER_EMAIL } = process.env;
+const CLIENT_URL = "https://med-connect-front.vercel.app/";
 
-const transporter = nodemailer.createTransport({
-  service: "Gmail",
-  auth: {
-    user: USER_EMAIL,
-    pass: PASSWORD_EMAIL,
-  },
-});
-
-const userGet = async (req, res) => {
-  try {
-    const data = await User.findAll();
-    if (!data || data.length === 0) {
-      return handleHttpError(res, "USUARIOS_NO_ENCONTRADOS");
-    }
-    res.status(200).json(data);
-  } catch (error) {
-    handleHttpError(res, "ERROR_OBTENER_USUARIOS");
-  }
-};
 const registerCtrl = async (req, res) => {
   try {
     req = matchedData(req);
@@ -46,19 +27,13 @@ const registerCtrl = async (req, res) => {
     };
 
     //Enviar correo electrónico de confirmación o bienvenida al usuario
-    const mailOptions = {
-      from: USER_EMAIL,
-      to: req.email,
-      subject: "¡Bienvenido a nuestra aplicación!",
-      text: "Gracias por registrarte en nuestra aplicación. Esperamos que disfrutes de tu experiencia.",
-    };
 
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Correo electrónico enviado: " + info.response);
-      }
+    await transporter.sendMail({
+      from: '"Medconnect" <services.medconnect@gmail.com>', // sender address
+      to: req.email, // list of receivers
+      subject: `¡Bienvenido a nuestra aplicación! ${req.first_name}`, // Subject line
+      text: "Gracias por registrarte en nuestra aplicación. Esperamos que disfrutes de tu experiencia.", // plain text body
+      //html: "<b>Hello world?</b>", // html body
     });
 
     res.status(201).json(data);
@@ -124,4 +99,4 @@ const loginSuccess = (req, res) => {
   }
 };
 
-module.exports = { registerCtrl, loginCtrl, userGet, loginSuccess, logoutUser };
+module.exports = { registerCtrl, loginCtrl, loginSuccess, logoutUser };
