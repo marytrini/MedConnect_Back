@@ -53,6 +53,7 @@ const userGet = async (req, res) => {
         exclude: ["appointmentId", "cityId", "userId", "patientsReviewId"],
       },
     });
+
     if (!data || data.length === 0) {
       return handleHttpError(res, "USUARIOS_NO_ENCONTRADOS");
     }
@@ -84,7 +85,7 @@ const userGet = async (req, res) => {
       }
     });
 
-    res.status(200).json({ dataFinal });
+    res.status(200).json(dataFinal);
   } catch (error) {
     console.log(error);
     handleHttpError(res, "ERROR_OBTENER_USUARIOS");
@@ -164,4 +165,5 @@ const restoreUser = async (req, res) => {
     handleHttpError(res, { error: error.message }, 404);
   }
 };
+
 module.exports = { userGet, getUserId, deleteUser, restoreUser };
