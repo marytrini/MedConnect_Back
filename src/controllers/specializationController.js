@@ -40,17 +40,6 @@ const getSpecialization = async (req, res) => {
 
 const createSpecializations = async (req, res) => {
   try {
-    // const { file, body } = req;
-
-    // const fileData = {
-    //   description: body.description,
-    //   name: body.name,
-    //   url: `${PUBLIC_URL}/${file.filename}`,
-    // };
-
-    // const data = await Specialization.create(fileData);
-    // res.status(201).json(data);
-
     const { body } = req;
     const newSpecialization = await Specialization.create(body);
 
@@ -63,6 +52,30 @@ const createSpecializations = async (req, res) => {
     handleHttpError(res, { error: error.message }, 500);
   }
 };
+
+const updateSpecialization = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, url, description } = req.body;
+
+    const updatedSpec = await Specialization.findByPk(id);
+
+    if (!updatedSpec)
+      res
+        .status(404)
+        .json({ error: `No se encontró una especialidad con id ${id}` });
+
+    updatedSpec.name = name;
+    updatedSpec.url = url;
+    updatedSpec.description = description;
+    await updatedSpec.save();
+
+    res.status(200).json({ message: "¡Especialidad actualizada!" });
+  } catch (error) {
+    handleHttpError(res, { error: error.message }, 500);
+  }
+};
+
 const deleteSpecializations = async (req, res) => {
   try {
     const { id } = req.params;
@@ -100,29 +113,6 @@ const restoreSpec = async (req, res) => {
     res.status(200).json({ message: "Especialidad restaurada" });
   } catch (error) {
     handleHttpError(res, { error: error.message }, 404);
-  }
-};
-
-const updateSpecialization = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, url, description } = req.body;
-
-    const updatedSpec = await Specialization.findByPk(id);
-
-    if (!updatedSpec)
-      res
-        .status(404)
-        .json({ error: `No se encontró una especialidad con id ${id}` });
-
-    updatedSpec.name = name;
-    updatedSpec.url = url;
-    updatedSpec.description = description;
-    await updatedSpec.save();
-
-    res.status(200).json({ message: "¡Especialidad actualizada!" });
-  } catch (error) {
-    handleHttpError(res, { error: error.message }, 500);
   }
 };
 

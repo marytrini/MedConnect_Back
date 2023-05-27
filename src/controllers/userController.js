@@ -29,6 +29,14 @@ const userGet = async (req, res) => {
             "email",
             "phone",
             "direccion",
+            "dni",
+            "observaciones",
+          ],
+          include: [
+            {
+              model: Appointment,
+              attributes: ["scheduledDate", "scheduledTime", "status"],
+            },
           ],
         },
         {
@@ -45,6 +53,7 @@ const userGet = async (req, res) => {
         exclude: ["appointmentId", "cityId", "userId", "patientsReviewId"],
       },
     });
+
     if (!data || data.length === 0) {
       return handleHttpError(res, "USUARIOS_NO_ENCONTRADOS");
     }
@@ -57,7 +66,26 @@ const userGet = async (req, res) => {
       }
     });
 
-    res.status(200).json(newData);
+    const newDataFiltered = newData.map((user) => {
+      if (user.role === "admin") {
+        const { appointments, ...userWithoutPatients } = user;
+        return userWithoutPatients;
+      } else {
+        return user;
+      }
+    });
+    const dataFinal = newDataFiltered.map((user) => {
+      if (user.role === "paciente") {
+        const { appointments, ...userWithoutPatients } = user.get({
+          plain: true,
+        });
+        return userWithoutPatients;
+      } else {
+        return user;
+      }
+    });
+
+    res.status(200).json(dataFinal);
   } catch (error) {
     console.log(error);
     handleHttpError(res, "ERROR_OBTENER_USUARIOS");

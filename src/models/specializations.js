@@ -21,11 +21,9 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
     },
+
     {
       paranoid: true, // Habilitar borrado lógico
-    },
-    {
-      timestamps: true,
     }
   );
 };

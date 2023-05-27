@@ -12,7 +12,7 @@ const medicalSchedule = require("./medicalSchedule.js");
 const auth = require("./auth.js");
 const authTerceros = require("./authTerceros.js");
 const users = require("./users.js");
-const payments = require("./payments.js");
+const payment = require("./payment.js");
 
 router.use("/specializations", specializations);
 router.use("/appointment", appointment);
@@ -24,7 +24,7 @@ router.use("/patients", patients);
 router.use("/auth", auth);
 router.use("/auth", authTerceros);
 router.use("/users", users);
-router.use("/payments", payments);
+router.use("/payment", payment);
 
 module.exports = {
   router,

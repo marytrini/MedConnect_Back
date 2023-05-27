@@ -3,18 +3,18 @@ const fs = require("fs");
 const path = require("path");
 const { DATABASE_URL } = process.env;
 
-// const sequelize = new Sequelize(DATABASE_URL, {
-//   logging: false, // set to console.log to see the raw SQL queries
-//   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
-// });
-const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
-const sequelize = new Sequelize(
-  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/medconnect`,
-  {
-    logging: false, // set to console.log to see the raw SQL queries
-    native: false, // lets Sequelize know we can use pg-native for ~30% more speed
-  }
-);
+const sequelize = new Sequelize(DATABASE_URL, {
+  logging: false, // set to console.log to see the raw SQL queries
+  native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+});
+// const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
+// const sequelize = new Sequelize(
+//   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/medconnect`,
+//   {
+//     logging: false, // set to console.log to see the raw SQL queries
+//     native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+//   }
+// );
 
 const basename = path.basename(__filename);
 
@@ -44,27 +44,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 // Para relacionarlos hacemos un destructuring
 
 // console.log(sequelize.models);
-const createAppointment = async (req, res) => {
-  try {
-    const { body } = req;
 
-    const newAppointment = await Appointment.create({
-      scheduledDate: body.scheduledDate,
-      scheduledTime: body.scheduledTime,
-      status: body.status,
-      userId: body.userId,
-      patientId: body.patientId,
-    });
-
-    if (newAppointment) {
-      res.status(200).json({ message: "¡Cita creada exitosamente!" });
-    } else {
-      handleHttpError(res, "Error al crear la cita", 404);
-    }
-  } catch (error) {
-    handleHttpError(res, { error: error.message }, 500);
-  }
-};
 const {
   Specialization,
   Medico,
