@@ -6,7 +6,7 @@ const passport = require("passport");
 const { createServer } = require("http");
 const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
-
+const cors = require("cors");
 const { router } = require("./routes/router.js");
 
 const app = express();
@@ -35,12 +35,21 @@ app.use(require("morgan")("dev"));
 //     origin: "*",
 //   })
 // );
-app.use(
-  require("cors")({
-    origin: "http://localhost:3000",
-    credentials: true,
-  })
-);
+const allowedOrigins = [
+  "https://med-connect-front.vercel.app",
+  "http://localhost:3000",
+];
+const corsOptions = {
+  origin: allowedOrigins,
+};
+
+app.use(cors(corsOptions));
+// app.use(
+//   require("cors")({
+//     origin: "http://localhost:3000",
+//     credentials: true,
+//   })
+// );
 app.use(express.static("./src/storage"));
 
 app.use("/", router);
