@@ -12,7 +12,7 @@ const { router } = require("./routes/router.js");
 const app = express();
 const httpServer = createServer(app);
 
-server.use((req, res, next) => {
+app.use((req, res, next) => {
   res.header(
     "Access-Control-Allow-Origin",
     "https://med-connect-front.vercel.app"
