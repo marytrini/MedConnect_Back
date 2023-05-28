@@ -13,6 +13,7 @@ const auth = require("./auth.js");
 const authTerceros = require("./authTerceros.js");
 const users = require("./users.js");
 const payment = require("./payment.js");
+const reviews = require("./reviews.js");
 
 router.use("/specializations", specializations);
 router.use("/appointment", appointment);
@@ -25,7 +26,7 @@ router.use("/auth", auth);
 router.use("/auth", authTerceros);
 router.use("/users", users);
 router.use("/payment", payment);
-router.use("/reviews");
+router.use("/reviews", reviews);
 
 module.exports = {
   router,
