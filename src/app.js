@@ -13,6 +13,14 @@ const app = express();
 const httpServer = createServer(app);
 
 app.use(
+  cors({
+    origin: ["https://med-connect-front.vercel.app", "http://localhost:3000"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type"],
+    credentials: true,
+  })
+);
+app.use(
   cookieSession({
     name: "session",
     keys: [process.env.JWT_SECRET],
@@ -30,26 +38,7 @@ app.set("port", process.env.PORT);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(require("morgan")("dev"));
-// app.use(
-//   require("cors")({
-//     origin: "*",
-//   })
-// );
-const allowedOrigins = [
-  "https://med-connect-front.vercel.app",
-  "http://localhost:3000",
-];
-const corsOptions = {
-  origin: allowedOrigins,
-};
 
-app.use(cors(corsOptions));
-// app.use(
-//   require("cors")({
-//     origin: "http://localhost:3000",
-//     credentials: true,
-//   })
-// );
 app.use(express.static("./src/storage"));
 
 app.use("/", router);
