@@ -8,7 +8,7 @@ const getSpecializations = async (req, res) => {
   try {
     const { name } = req.query;
 
-    const data = await Specialization.findAll();
+    const data = await Specialization.findAll({ paranoid: false });
     if (name) {
       let dataByName = await data.filter((obj) =>
         obj.name.toLowerCase().includes(name.toLowerCase())
