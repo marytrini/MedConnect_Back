@@ -37,7 +37,7 @@ app.use(require("morgan")("dev"));
 // );
 app.use(
   require("cors")({
-    origin: "https://localhost:3000",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
