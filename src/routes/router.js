@@ -25,6 +25,7 @@ router.use("/auth", auth);
 router.use("/auth", authTerceros);
 router.use("/users", users);
 router.use("/payment", payment);
+router.use("/reviews");
 
 module.exports = {
   router,
