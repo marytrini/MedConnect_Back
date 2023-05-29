@@ -6,7 +6,6 @@ const passport = require("passport");
 const { createServer } = require("http");
 const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
-const cors = require("cors");
 const { router } = require("./routes/router.js");
 
 const app = express();
@@ -44,6 +43,7 @@ app.use(
     name: "session",
     keys: [process.env.JWT_SECRET],
     maxAge: 24 * 60 * 60 * 100,
+    domain: "med-connect-front.vercel.app",
   })
 );
 app.use(passport.initialize());
