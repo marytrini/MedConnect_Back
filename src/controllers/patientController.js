@@ -124,7 +124,8 @@ const createPatient = async (req, res) => {
 const updatePatient = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, phone, direccion } = req.body;
+    const { firstName, lastName, phone, direccion, email, dni, observaciones } =
+      req.body;
 
     const updated = await Patient.findByPk(id);
 
