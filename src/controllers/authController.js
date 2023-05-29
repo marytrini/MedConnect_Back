@@ -31,7 +31,7 @@ const registerCtrl = async (req, res) => {
     await transporter.sendMail({
       from: '"Medconnect" <services.medconnect@gmail.com>', // sender address
       to: req.email, // list of receivers
-      subject: `¡Bienvenido a nuestra aplicación! ${req.first_name}`, // Subject line
+      subject: `¡Bienvenido a nuestra aplicación ${req.first_name}!`, // Subject line
       text: "Gracias por registrarte en nuestra aplicación. Esperamos que disfrutes de tu experiencia.", // plain text body
       //html: "<b>Hello world?</b>", // html body
     });

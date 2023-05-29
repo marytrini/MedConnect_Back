@@ -1,11 +1,45 @@
-const { User, Patient } = require("../sequelize/sequelize");
+const { User, Patient, PatientsReview } = require("../sequelize/sequelize");
 const { handleHttpError } = require("../utils/handleError");
+
+const getReviews = async (req, res) => {
+  try {
+    const data = await PatientsReview.findAll({
+      include: [
+        {
+          model: User,
+          where: { role: "medico" },
+          attributes: ["first_name", "last_name"],
+        },
+        {
+          model: Patient,
+          attributes: ["comment", "rating", "recommend"],
+        },
+      ],
+      attributes: {
+        exclude: ["patientId", "UserId"],
+      },
+    });
+
+    res.status(200).json(data);
+  } catch (error) {
+    handleHttpError(res, { error: error.message });
+  }
+};
 
 const createReview = async (req, res) => {
   try {
+    const { body } = req;
+
+    const newReview = await PatientsReview.create(body);
+
+    if (Object.keys(newReview).length === 0) {
+      handleHttpError(res, "Error al crear review", 404);
+      return;
+    }
+    res.status(200).json(newReview);
   } catch (error) {
     handleHttpError(res, { error: error.message }, 500);
   }
 };
 
-module.exports = { createReview };
+module.exports = { createReview, getReviews };
