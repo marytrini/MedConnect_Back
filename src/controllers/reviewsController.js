@@ -42,4 +42,19 @@ const createReview = async (req, res) => {
   }
 };
 
-module.exports = { createReview, getReviews };
+const deleteReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const review = await PatientsReview.findByPk(id);
+
+    if (!review) {
+      return handleHttpError(res, `review con id ${id} no encontrada`, 404);
+    }
+    await review.destroy();
+
+    res.status(200).json({ message: "review eliminada" });
+  } catch (error) {
+    handleHttpError(res, { error: error.message }, 404);
+  }
+};
+module.exports = { createReview, getReviews, deleteReview };
