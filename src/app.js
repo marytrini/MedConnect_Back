@@ -6,11 +6,38 @@ const passport = require("passport");
 const { createServer } = require("http");
 const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
-
+const cors = require("cors");
 const { router } = require("./routes/router.js");
 
 const app = express();
 const httpServer = createServer(app);
+
+// app.use((req, res, next) => {
+//   res.header(
+//     "Access-Control-Allow-Origin",
+//     "https://med-connect-front.vercel.app"
+//   ); // update to match the domain you will make the request from
+//   res.header("Access-Control-Allow-Credentials", "true");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+//   next();
+// });
+app.use((req, res, next) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://med-connect-front.vercel.app"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, access-control-allow-credentials"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+});
 
 app.use(
   cookieSession({
@@ -30,17 +57,7 @@ app.set("port", process.env.PORT);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(require("morgan")("dev"));
-// app.use(
-//   require("cors")({
-//     origin: "*",
-//   })
-// );
-app.use(
-  require("cors")({
-    origin: "http://localhost:3000",
-    credentials: true,
-  })
-);
+
 app.use(express.static("./src/storage"));
 
 app.use("/", router);
