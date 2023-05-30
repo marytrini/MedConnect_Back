@@ -4,6 +4,8 @@ const {
   Patient,
   Appointment,
   PatientsReview,
+  Medico,
+  City,
 } = require("../sequelize/sequelize");
 const { Op } = require("sequelize");
 
@@ -95,7 +97,25 @@ const userGet = async (req, res) => {
 const getUserId = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(id, {
+      include: [
+        {
+          model: Medico,
+          include: [
+            {
+              model: City,
+              attributes: ["name"],
+            },
+          ],
+          attributes: {
+            exclude: ["cityId"],
+          },
+        },
+      ],
+      attributes: {
+        exclude: ["userId"],
+      },
+    });
 
     if (!user) {
       return res

@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
       rating: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       recommend: {
