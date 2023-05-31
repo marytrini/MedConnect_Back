@@ -14,7 +14,6 @@ const getMedicsCalification = async (req, res) => {
     handleHttpError(res, { error: error.message }, 500);
   }
 };
-
 const createMedicoCalification = async (req, res) => {
   try {
     const { body } = req;
