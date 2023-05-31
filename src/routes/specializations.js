@@ -8,9 +8,11 @@ const {
   getSpecialization,
   updateSpecialization,
   restoreSpec,
+  getAllSpecializations,
 } = require("../controllers/specializationController");
 
 router.get("/", getSpecializations);
+router.get("/all", getAllSpecializations);
 router.get("/:id", getSpecialization);
 router.post("/", createSpecializations);
 router.put("/:id", updateSpecialization);
