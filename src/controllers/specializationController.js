@@ -8,6 +8,25 @@ const getSpecializations = async (req, res) => {
   try {
     const { name } = req.query;
 
+    const data = await Specialization.findAll();
+    if (name) {
+      let dataByName = await data.filter((obj) =>
+        obj.name.toLowerCase().includes(name.toLowerCase())
+      );
+      dataByName.length
+        ? res.status(200).json(dataByName)
+        : handleHttpError(res, { message: "No existe la especialidad" }, 404);
+    } else {
+      res.status(200).json(data);
+    }
+  } catch (error) {
+    handleHttpError(res, "Error_List_Specializations");
+  }
+};
+const getAllSpecializations = async (req, res) => {
+  try {
+    const { name } = req.query;
+
     const data = await Specialization.findAll({ paranoid: false });
     if (name) {
       let dataByName = await data.filter((obj) =>
@@ -123,4 +142,5 @@ module.exports = {
   getSpecialization,
   updateSpecialization,
   restoreSpec,
+  getAllSpecializations,
 };
