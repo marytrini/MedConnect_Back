@@ -10,10 +10,6 @@ const getReviews = async (req, res) => {
           where: { role: "medico" },
           attributes: ["first_name", "last_name"],
         },
-        {
-          model: Patient,
-          attributes: ["comment", "rating", "recommend"],
-        },
       ],
       attributes: {
         exclude: ["patientId", "UserId"],
