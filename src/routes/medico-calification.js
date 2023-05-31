@@ -4,6 +4,7 @@ const {
   createMedicoCalification,
   getMedicsCalification,
 } = require("../controllers/medico-calificationController");
+
 router.get("/", getMedicsCalification);
 
 router.post("/", createMedicoCalification);
