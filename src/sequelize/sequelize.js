@@ -84,6 +84,7 @@ User.hasMany(Patient, {
 Patient.belongsTo(User);
 
 Patient.hasMany(PatientsReview);
+PatientsReview.belongsTo(Patient);
 
 Patient.hasMany(Appointment);
 Appointment.belongsTo(Patient);
