@@ -25,17 +25,17 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(cookieParser());
 app.use(
   cookieSession({
     name: "session",
     keys: [process.env.JWT_SECRET],
     maxAge: 24 * 60 * 60 * 100,
-    // domain: "med-connect-front.vercel.app",
+    domain: "med-connect-clinica.vercel.app",
   })
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cookieParser());
 
 //express vars
 app.set("port", process.env.PORT);
