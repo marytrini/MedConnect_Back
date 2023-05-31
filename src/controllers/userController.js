@@ -11,50 +11,53 @@ const { Op } = require("sequelize");
 
 const userGet = async (req, res) => {
   try {
-    const data = await User.findAll({
-      attributes: [
-        "id",
-        "first_name",
-        "last_name",
-        "email",
-        "role",
-        "createdAt",
-        "updatedAt",
-      ],
-      include: [
-        {
-          model: Patient,
-          attributes: [
-            "id",
-            "firstName",
-            "lastName",
-            "email",
-            "phone",
-            "direccion",
-            "dni",
-            "observaciones",
-          ],
-          include: [
-            {
-              model: Appointment,
-              attributes: ["scheduledDate", "scheduledTime", "status"],
-            },
-          ],
+    const data = await User.findAll(
+      { paranoid: false },
+      {
+        attributes: [
+          "id",
+          "first_name",
+          "last_name",
+          "email",
+          "role",
+          "createdAt",
+          "updatedAt",
+        ],
+        include: [
+          {
+            model: Patient,
+            attributes: [
+              "id",
+              "firstName",
+              "lastName",
+              "email",
+              "phone",
+              "direccion",
+              "dni",
+              "observaciones",
+            ],
+            include: [
+              {
+                model: Appointment,
+                attributes: ["scheduledDate", "scheduledTime", "status"],
+              },
+            ],
+          },
+          {
+            model: Appointment,
+            attributes: ["scheduledDate", "scheduledTime", "status"],
+            include: [
+              {
+                model: Patient,
+              },
+            ],
+          },
+        ],
+        attributes: {
+          exclude: ["appointmentId", "cityId", "userId", "patientsReviewId"],
         },
-        {
-          model: Appointment,
-          attributes: ["scheduledDate", "scheduledTime", "status"],
-          include: [
-            {
-              model: Patient,
-            },
-          ],
-        },
-      ],
-      attributes: {
-        exclude: ["appointmentId", "cityId", "userId", "patientsReviewId"],
-      },
-    });
+      }
+    );
 
     if (!data || data.length === 0) {
       return handleHttpError(res, "USUARIOS_NO_ENCONTRADOS");
