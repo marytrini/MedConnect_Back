@@ -5,7 +5,7 @@ const { encrypt, compare } = require("../utils/handlePassword");
 const { handleHttpError } = require("../utils/handleError");
 const transporter = require("../config/mailer");
 const { USER_EMAIL } = process.env;
-const CLIENT_URL = "medconnectfront-production.up.railway.app";
+const CLIENT_URL = "https://medconnectfront-production.up.railway.app";
 
 const registerCtrl = async (req, res) => {
   try {
