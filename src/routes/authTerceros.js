@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const passport = require("passport");
 
-const CLIENT_URL = "https://medconnect-clinica-production.up.railway.app";
+const CLIENT_URL = "medconnectfront-production.up.railway.app";
 
 router.get("/login/success", (req, res) => {
   if (req.user) {
