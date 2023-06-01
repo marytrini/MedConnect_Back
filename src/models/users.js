@@ -31,6 +31,14 @@ module.exports = (sequelize) => {
         type: DataTypes.ENUM("paciente", "medico", "admin"),
         defaultValue: "paciente",
       },
+      external_type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      external_id: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       deletedAt: {
         // Columna para el borrado lógico
         type: DataTypes.DATE,

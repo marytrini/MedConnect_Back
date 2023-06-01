@@ -124,7 +124,9 @@ const getMedic = async (req, res) => {
         exclude: ["cityId", "scheduleId", "userId"],
       },
     });
-    const dataById = data.find((medic) => medic.user.id === id);
+    console.log(data);
+    const dataById = data.find((medic) => medic.id === Number(id));
+    console.log(dataById);
     if (!dataById) {
       return res
         .status(404)

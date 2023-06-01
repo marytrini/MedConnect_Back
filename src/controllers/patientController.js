@@ -64,20 +64,12 @@ const getPatients = async (req, res) => {
 const getPatient = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
     const data = await Patient.findByPk(id, {
       include: [
         {
           model: Appointment,
           attributes: ["scheduledDate", "scheduledTime"],
-          include: [
-            {
-              model: Medico,
-              attributes: ["first_name", "last_name"],
-            },
-          ],
-          attributes: {
-            exclude: ["medicoId", "patientId"],
-          },
         },
         {
           model: City,
@@ -88,6 +80,7 @@ const getPatient = async (req, res) => {
         exclude: ["cityId"],
       },
     });
+    console.log(data);
     if (!data) {
       return res
         .status(404)

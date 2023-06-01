@@ -9,6 +9,94 @@ const {
 } = require("../sequelize/sequelize");
 const { Op } = require("sequelize");
 
+const userGetParanoid = async (req, res) => {
+  try {
+    const data = await User.findAll(
+      { paranoid: false },
+      {
+        attributes: [
+          "id",
+          "first_name",
+          "last_name",
+          "email",
+          "role",
+          "createdAt",
+          "updatedAt",
+        ],
+        include: [
+          {
+            model: Patient,
+            attributes: [
+              "id",
+              "firstName",
+              "lastName",
+              "email",
+              "phone",
+              "direccion",
+              "dni",
+              "observaciones",
+            ],
+            include: [
+              {
+                model: Appointment,
+                attributes: ["scheduledDate", "scheduledTime", "status"],
+              },
+            ],
+          },
+          {
+            model: Appointment,
+            attributes: ["scheduledDate", "scheduledTime", "status"],
+            include: [
+              {
+                model: Patient,
+              },
+            ],
+          },
+        ],
+        attributes: {
+          exclude: ["appointmentId", "cityId", "userId", "patientsReviewId"],
+        },
+      }
+    );
+
+    if (!data || data.length === 0) {
+      return handleHttpError(res, "USUARIOS_NO_ENCONTRADOS");
+    }
+    const newData = data.map((user) => {
+      if (user.role === "medico" || user.role === "admin") {
+        const { patients, ...userWithoutPatients } = user.get({ plain: true });
+        return userWithoutPatients;
+      } else {
+        return user;
+      }
+    });
+
+    const newDataFiltered = newData.map((user) => {
+      if (user.role === "admin") {
+        const { appointments, ...userWithoutPatients } = user;
+        return userWithoutPatients;
+      } else {
+        return user;
+      }
+    });
+    const dataFinal = newDataFiltered.map((user) => {
+      if (user.role === "paciente") {
+        const { appointments, ...userWithoutPatients } = user.get({
+          plain: true,
+        });
+        return userWithoutPatients;
+      } else {
+        return user;
+      }
+    });
+
+    res.status(200).json(dataFinal);
+  } catch (error) {
+    console.log(error);
+    handleHttpError(res, "ERROR_OBTENER_USUARIOS");
+  }
+};
+
 const userGet = async (req, res) => {
   try {
     const data = await User.findAll({
@@ -186,4 +274,10 @@ const restoreUser = async (req, res) => {
   }
 };
 
-module.exports = { userGet, getUserId, deleteUser, restoreUser };
+module.exports = {
+  userGet,
+  getUserId,
+  deleteUser,
+  restoreUser,
+  userGetParanoid,
+};

@@ -1,19 +1,47 @@
 const router = require("express").Router();
 const passport = require("passport");
+const { User } = require("../sequelize/sequelize");
 
 const CLIENT_URL = "https://medconnectfront-production.up.railway.app";
 
-router.get("/login/success", (req, res) => {
-  if (req.user) {
-    res.status(200).json({
-      success: true,
-      message: "successfull",
-      user: req.user,
-      //   cookies: req.cookies
-    });
+router.get("/login/success", async (req, res) => {
+  try {
+    // console.log(req.user.emails);
+
+    if (req.user) {
+      const user = await User.findOne({
+        where: { email: req.user._json.email },
+      });
+      if (user) {
+        res.status(200).json({
+          success: true,
+          message: "successfull",
+          user: req.user,
+          //   cookies: req.cookies
+        });
+      } else {
+        const body = {
+          first_name: req.user.name.givenName,
+          last_name: req.user.name.familyName,
+          email: req.user._json.email,
+          password: req.user.id,
+          external_type: req.user.provider,
+          external_id: req.user.id,
+        };
+
+        await User.create(body);
+        res.status(200).json({
+          success: true,
+          message: "successfull",
+          user: req.user,
+          //   cookies: req.cookies
+        });
+      }
+    }
+  } catch (error) {
+    handleHttpError(res, error.message, 500);
   }
 });
-
 router.get("/login/failed", (req, res) => {
   res.status(401).json({
     success: false,
@@ -26,7 +54,10 @@ router.get("/logout", (req, res) => {
   res.redirect(CLIENT_URL);
 });
 
-router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
 
 router.get(
   "/google/callback",

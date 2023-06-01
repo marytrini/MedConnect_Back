@@ -16,27 +16,28 @@ const registerCtrl = async (req, res) => {
     if (user) {
       // return res.status(409).json({ error: "EMAIL_ALREADY_REGISTERED" });
       handleHttpError(res, "EMAIL_ALREADY_REGISTERED", 409);
+    } else {
+      const password = await encrypt(req.password);
+      const body = { ...req, password };
+      const dataUser = await User.create(body);
+
+      const data = {
+        token: await tokenSign(dataUser),
+        user: dataUser,
+      };
+
+      //Enviar correo electrónico de confirmación o bienvenida al usuario
+
+      await transporter.sendMail({
+        from: '"Medconnect" <services.medconnect@gmail.com>', // sender address
+        to: req.email, // list of receivers
+        subject: `¡Bienvenido a nuestra aplicación ${req.first_name}!`, // Subject line
+        text: "Gracias por registrarte en nuestra aplicación. Esperamos que disfrutes de tu experiencia.", // plain text body
+        //html: "<b>Hello world?</b>", // html body
+      });
+
+      res.status(201).json(data);
     }
-    const password = await encrypt(req.password);
-    const body = { ...req, password };
-    const dataUser = await User.create(body);
-
-    const data = {
-      token: await tokenSign(dataUser),
-      user: dataUser,
-    };
-
-    //Enviar correo electrónico de confirmación o bienvenida al usuario
-
-    await transporter.sendMail({
-      from: '"Medconnect" <services.medconnect@gmail.com>', // sender address
-      to: req.email, // list of receivers
-      subject: `¡Bienvenido a nuestra aplicación ${req.first_name}!`, // Subject line
-      text: "Gracias por registrarte en nuestra aplicación. Esperamos que disfrutes de tu experiencia.", // plain text body
-      //html: "<b>Hello world?</b>", // html body
-    });
-
-    res.status(201).json(data);
   } catch (error) {
     handleHttpError(res, "ERROR_REGISTRO");
   }

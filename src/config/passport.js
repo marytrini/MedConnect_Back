@@ -12,9 +12,10 @@ passport.use(
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
       callbackURL: "/auth/google/callback",
+      scope: ["profile", "email"],
     },
     function (accessToken, refreshToken, profile, done) {
-      done(null, profile);
+      return done(null, profile);
     }
   )
 );
