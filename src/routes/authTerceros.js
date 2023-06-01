@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const passport = require("passport");
 const { User } = require("../sequelize/sequelize");
+const transporter = require("../config/mailer");
 
 const CLIENT_URL = "https://medconnectfront-production.up.railway.app";
 
@@ -38,6 +39,16 @@ router.get("/login/success", async (req, res) => {
         });
       }
     }
+
+    //Enviar correo electrónico de confirmación o bienvenida al usuario
+
+    await transporter.sendMail({
+      from: '"Medconnect" <services.medconnect@gmail.com>', // sender address
+      to: req.user._json.email, // list of receivers
+      subject: `¡Bienvenido a nuestra aplicación ${req.user.name.givenName}!`, // Subject line
+      text: "Gracias por registrarte en nuestra aplicación. Esperamos que disfrutes de tu experiencia.", // plain text body
+      //html: "<b>Hello world?</b>", // html body
+    });
   } catch (error) {
     handleHttpError(res, error.message, 500);
   }
