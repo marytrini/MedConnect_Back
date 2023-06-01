@@ -2,7 +2,7 @@ const router = require("express").Router();
 const passport = require("passport");
 const { User } = require("../sequelize/sequelize");
 
-const CLIENT_URL = "https://medconnect-clinica-production.up.railway.app";
+const CLIENT_URL = "https://medconnectfront-production.up.railway.app";
 
 router.get("/login/success", async (req, res) => {
   try {

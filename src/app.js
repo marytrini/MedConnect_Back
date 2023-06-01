@@ -14,7 +14,7 @@ const httpServer = createServer(app);
 app.use((req, res, next) => {
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://medconnect-clinica-production.up.railway.app"
+    "https://medconnectfront-production.up.railway.app"
   );
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader(
