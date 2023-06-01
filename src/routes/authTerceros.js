@@ -2,6 +2,7 @@ const router = require("express").Router();
 const passport = require("passport");
 const { User } = require("../sequelize/sequelize");
 const transporter = require("../config/mailer");
+const { handleHttpError } = require("../utils/handleError");
 
 const CLIENT_URL = "https://medconnectfront-production.up.railway.app";
 
