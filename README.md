@@ -1,3 +1,1 @@
-# MetConnect
-
-Sistema de reserva de citas médicas online.
+# MedConnect_Back
