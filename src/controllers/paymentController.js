@@ -18,7 +18,7 @@ const createOrder = async (req, res) => {
       },
     ],
     back_urls: {
-      success: "https://medconnectfront-production.up.railway.app",
+      success: "http://localhost:3000",
       failure: `${PUBLIC_URL}/failure`,
       pending: `${PUBLIC_URL}/pending`,
     },
