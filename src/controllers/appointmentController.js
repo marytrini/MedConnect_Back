@@ -103,7 +103,7 @@ const updateAppointment = async (req, res) => {
     <p>Esperamos que estés disfrutando de los servicios de Medconnect y que estemos cumpliendo con tus expectativas. Nos gustaría aprovechar esta oportunidad para invitarte a compartir tu experiencia con nosotros y ayudarnos a crecer.</p>
     <p>Tu opinión es esencial para nuestro equipo, ya que nos permite evaluar nuestra calidad de servicio y nos brinda información valiosa para tomar decisiones informadas. Nos encantaría conocer tus comentarios, sugerencias y cualquier idea que puedas tener para mejorar.</p>
     <p>Por favor, tómate unos minutos para completar nuestra breve encuesta de satisfacción. Tu participación nos ayudará a seguir ofreciendo servicios de excelencia y adaptados a tus necesidades.</p>
-    <p><a href="http://localhost:3000/reviews">Haz clic aquí para completar la encuesta</a></p>
+    <p><a href="https://medconnectfront-production.up.railway.app/reviews">Haz clic aquí para completar la encuesta</a></p>
     <p>Agradecemos sinceramente tu tiempo y apreciamos tu colaboración. Si tienes alguna pregunta o necesitas asistencia adicional, nuestro equipo de atención al cliente está aquí para ayudarte.</p>
     <p>¡Esperamos recibir tus comentarios y seguir trabajando juntos para proporcionarte la mejor experiencia posible con Medconnect!</p>
     <p>Atentamente,<br>El equipo de Medconnect</p>

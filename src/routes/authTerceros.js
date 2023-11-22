@@ -4,7 +4,7 @@ const { User } = require("../sequelize/sequelize");
 const transporter = require("../config/mailer");
 const { handleHttpError } = require("../utils/handleError");
 
-const CLIENT_URL = "http://localhost:3000";
+const CLIENT_URL = "https://medconnectfront-production.up.railway.app";
 
 router.get("/login/success", async (req, res) => {
   try {
